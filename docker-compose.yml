@@ -1,5 +1,5 @@
 services:
-  stat-srvc:
+  stats-server:
     build: stat-srvc/service
     image: stats-server
     container_name: stats-server
@@ -26,3 +26,12 @@ services:
       timeout: 5s
       interval: 5s
       retries: 10
+
+  service:
+    build: main-srvc/
+    image: main-server
+    container_name: main-server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - stat-srvc
