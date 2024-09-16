@@ -27,10 +27,10 @@ services:
       interval: 5s
       retries: 10
 
-  service:
+  ewm-service:
     build: main-srvc/
-    image: main-server
-    container_name: main-server
+    image: ewm-service
+    container_name: ewm-service
     ports:
       - "8080:8080"
     depends_on:
