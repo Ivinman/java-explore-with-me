@@ -1,6 +1,6 @@
 services:
   stat-srvc:
-    build: stat-srvc/server
+    build: stat-srvc/service
     image: stats-server
     container_name: stats-server
     ports:
