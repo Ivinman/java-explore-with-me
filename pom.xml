@@ -13,9 +13,6 @@
 	<name>Explore With Me</name>
 	<modules>
 		<module>stat-srvc</module>
-		<module>stat-srvc/service</module>
-		<module>stat-srvc/dto</module>
-		<module>stat-srvc/client</module>
 		<module>main-srvc</module>
 	</modules>
 
