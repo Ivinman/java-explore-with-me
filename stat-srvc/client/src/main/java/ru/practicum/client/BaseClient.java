@@ -35,10 +35,10 @@ public class BaseClient {
         try {
             if (parameters != null) {
                 explorewithmeServerResponse = rest.exchange(path, method, requestEntity, Object.class, parameters);
-            }else {
+            } else {
                 explorewithmeServerResponse = rest.exchange(path, method, requestEntity, Object.class);
             }
-        }catch (HttpStatusCodeException e) {
+        } catch (HttpStatusCodeException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsByteArray());
         }
         return prepareClientResponse(explorewithmeServerResponse);
