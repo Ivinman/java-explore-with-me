@@ -15,7 +15,7 @@ public class HitController {
     private final HitService hitServiceImpl;
 
     @PostMapping("/hit")
-    public void addHit(@RequestBody HitDto hitDto){
+    public void addHit(@RequestBody HitDto hitDto) {
         hitServiceImpl.addHit(hitDto);
     }
 
