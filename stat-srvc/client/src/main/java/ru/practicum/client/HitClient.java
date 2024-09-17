@@ -32,7 +32,6 @@ public class HitClient extends BaseClient {
                                            List<String> uris, Boolean unique) {
         Map<String, Object> parameters;
         if (uris == null) {
-            //urisList = uris;
             parameters = Map.of("start", start,
                     "end", end,
                     "unique", unique
