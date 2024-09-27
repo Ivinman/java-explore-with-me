@@ -11,13 +11,13 @@
 
     <artifactId>stat-srvc</artifactId>
 
+    <packaging>pom</packaging>
+
     <modules>
         <module>service</module>
         <module>client</module>
         <module>dto</module>
     </modules>
-
-    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

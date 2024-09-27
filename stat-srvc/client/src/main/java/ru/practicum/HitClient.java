@@ -1,24 +1,23 @@
-package ru.practicum.client;
+package ru.practicum;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-import ru.practicum.HitDto;
 
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Component
 public class HitClient extends BaseClient {
     @Autowired
-    public HitClient(@Value("${explorewithme-server.url}") String serverUrl, RestTemplateBuilder builder) {
+    public HitClient(RestTemplateBuilder builder) {
         super(
                 builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
+                        .uriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:9090"))
                         .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
                         .build()
         );

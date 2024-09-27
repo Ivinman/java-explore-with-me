@@ -5,12 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.HitDto;
+import ru.practicum.HitClient;
+import ru.practicum.HitStatDto;
 import ru.practicum.dto.event.EventMapper;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.dto.event.ShortEventDto;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.event.Event;
-import ru.practicum.service.HitService;
 import ru.practicum.storage.event.EventRepository;
 
 import java.sql.Timestamp;
@@ -23,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PublicEventServiceImpl implements PublicEventService {
     private final EventRepository eventRepository;
-    private final HitService hitService;
+    private final HitClient hitClient;
 
     @Override
     public List<ShortEventDto> getEvents(String text, List<Integer> categories, Boolean paid,
@@ -72,10 +73,12 @@ public class PublicEventServiceImpl implements PublicEventService {
         for (Event event : events) {
             shortEventDtos.add(EventMapper.toEventShortDto(event));
 
-            hitService.addHit(hitDto);
-            Integer views = hitService.getStats(LocalDateTime.now().minusYears(5).format(formatter),
+            hitClient.addHit(hitDto);
+             List<HitStatDto> hitStatDtoList = (List<HitStatDto>) hitClient.getStats(LocalDateTime.now().minusYears(5).format(formatter),
                             LocalDateTime.now().plusYears(5).format(formatter), List.of(hitDto.getUri()), true)
-                    .getFirst().getHits();
+                    .getBody();
+             Integer views = hitStatDtoList.getFirst().getHits();
+
 
             event.setViews(views);
             eventRepository.save(event);
@@ -101,10 +104,10 @@ public class PublicEventServiceImpl implements PublicEventService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         hitDto.setTimestamp(LocalDateTime.now().format(formatter));
 
-        hitService.addHit(hitDto);
-        Integer views = hitService.getStats(LocalDateTime.now().minusYears(5).format(formatter),
-                        LocalDateTime.now().plusYears(5).format(formatter), List.of(hitDto.getUri()), true)
-                .getFirst().getHits();
+        hitClient.addHit(hitDto);
+        List<HitStatDto> hitStatDtoList = (List<HitStatDto>) hitClient.getStats(LocalDateTime.now().minusYears(5).format(formatter),
+                        LocalDateTime.now().plusYears(5).format(formatter), List.of(hitDto.getUri()), true);
+        Integer views = hitStatDtoList.getFirst().getHits();
 
         event.setViews(views);
         eventRepository.save(event);
