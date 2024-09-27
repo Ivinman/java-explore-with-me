@@ -10,5 +10,5 @@ public interface CompilationRepository extends JpaRepository<Compilation, Intege
 
     Compilation findFirstByOrderByIdDesc();
 
-    Compilation findByTitle (String title);
+    Compilation findByTitle(String title);
 }
