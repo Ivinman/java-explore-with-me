@@ -1,7 +1,6 @@
 package ru.practicum.part.private_part.events.service;
 
 import lombok.Data;
-import ru.practicum.part.private_part.requests.Request;
 import ru.practicum.part.private_part.requests.RequestDto;
 
 import java.util.List;

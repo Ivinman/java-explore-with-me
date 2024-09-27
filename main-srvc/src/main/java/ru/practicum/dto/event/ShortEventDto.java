@@ -4,7 +4,6 @@ import lombok.Data;
 import ru.practicum.dto.user.UserWithoutEmailDto;
 import ru.practicum.model.category.Category;
 
-import java.sql.Timestamp;
 
 @Data
 public class ShortEventDto {

@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.event.EventWithStateActionDto;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.part.admin_part.event.service.AdminEventService;
-import ru.practicum.model.event.Event;
 
 import java.util.List;
 

@@ -7,11 +7,9 @@ import ru.practicum.dto.event.EventDto;
 import ru.practicum.dto.event.EventWithStateActionDto;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.dto.event.ShortEventDto;
-import ru.practicum.model.event.Event;
 import ru.practicum.part.private_part.events.service.PrivateEventService;
 import ru.practicum.part.private_part.events.service.RequestEditDto;
 import ru.practicum.part.private_part.events.service.RequestResponse;
-import ru.practicum.part.private_part.requests.Request;
 import ru.practicum.part.private_part.requests.RequestDto;
 
 import java.util.List;

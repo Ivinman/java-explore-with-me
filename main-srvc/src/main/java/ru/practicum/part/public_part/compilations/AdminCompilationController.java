@@ -3,7 +3,6 @@ package ru.practicum.part.public_part.compilations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.compilation.CompilationOutDto;
-import ru.practicum.model.compilation.Compilation;
 import ru.practicum.part.public_part.compilations.service.PublicCompilationService;
 
 import java.util.List;

@@ -10,7 +10,6 @@ import ru.practicum.model.compilation.Compilation;
 import ru.practicum.model.user.User;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 @Table(name = "events")

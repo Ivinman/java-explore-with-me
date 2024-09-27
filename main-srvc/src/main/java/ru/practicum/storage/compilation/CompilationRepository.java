@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface CompilationRepository extends JpaRepository<Compilation, Integer> {
     List<Compilation> findByPinned(Boolean pinned);
+
     Compilation findFirstByOrderByIdDesc();
+
     Compilation findByTitle (String title);
 }

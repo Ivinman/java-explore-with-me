@@ -3,7 +3,7 @@ package ru.practicum.part.private_part.requests;
 import java.time.format.DateTimeFormatter;
 
 public class RequestMapper {
-    public static RequestDto toDto (Request request) {
+    public static RequestDto toDto(Request request) {
         RequestDto requestDto = new RequestDto();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");

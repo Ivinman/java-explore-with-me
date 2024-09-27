@@ -10,7 +10,7 @@ public class UserMapper {
         return user;
     }
 
-    public static UserWithoutEmailDto toUserWithoutEmailDto (User user) {
+    public static UserWithoutEmailDto toUserWithoutEmailDto(User user) {
         UserWithoutEmailDto userWithoutEmailDto = new UserWithoutEmailDto();
         userWithoutEmailDto.setId(user.getId());
         userWithoutEmailDto.setName(user.getName());

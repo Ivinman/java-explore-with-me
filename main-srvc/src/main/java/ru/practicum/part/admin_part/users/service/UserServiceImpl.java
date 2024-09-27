@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
             throw new ConflictException("Integrity constraint has been violated.",
                     "User already exist");
         }
-        if(userDto.getName() == null || userDto.getName().isEmpty() || userDto.getName().isBlank()) {
+        if (userDto.getName() == null || userDto.getName().isEmpty() || userDto.getName().isBlank()) {
             throw new BadRequestException("Field name filled incorrectly");
         }
         if (userDto.getEmail() == null || userDto.getEmail().isEmpty() || userDto.getEmail().isBlank()) {

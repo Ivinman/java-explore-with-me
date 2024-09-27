@@ -15,7 +15,7 @@ public class CompilationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public CompilationOutDto addCompilation (@RequestBody CompilationDto compilationDto) throws Exception {
+    public CompilationOutDto addCompilation(@RequestBody CompilationDto compilationDto) throws Exception {
         return compilationsService.addComp(compilationDto);
     }
 

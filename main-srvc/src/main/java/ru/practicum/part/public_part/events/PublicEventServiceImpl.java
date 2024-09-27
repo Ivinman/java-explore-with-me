@@ -8,7 +8,6 @@ import ru.practicum.HitDto;
 import ru.practicum.dto.event.EventMapper;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.dto.event.ShortEventDto;
-import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.event.Event;
 import ru.practicum.service.HitService;

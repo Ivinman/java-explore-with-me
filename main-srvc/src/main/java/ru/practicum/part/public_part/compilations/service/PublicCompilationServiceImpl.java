@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.dto.compilation.CompilationOutDto;
 import ru.practicum.dto.event.EventMapper;
 import ru.practicum.dto.event.ShortEventDto;
-import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.compilation.Compilation;
 import ru.practicum.model.event.Event;

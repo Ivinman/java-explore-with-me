@@ -5,5 +5,6 @@ import ru.practicum.model.event.Location;
 
 public interface LocationRepository extends JpaRepository<Location, Integer> {
     Location findFirstByOrderByIdDesc();
+
     Location findByLatAndLon(Double lat, Double lon);
 }
