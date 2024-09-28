@@ -1,6 +1,5 @@
 package ru.practicum.part.public_part.events;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -11,7 +10,6 @@ import ru.practicum.HitStatDto;
 import ru.practicum.dto.event.EventMapper;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.dto.event.ShortEventDto;
-import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.event.Event;
 import ru.practicum.storage.event.EventRepository;
