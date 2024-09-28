@@ -34,11 +34,11 @@ public class PublicEventServiceImpl implements PublicEventService {
         if (text == null) {
             text = " ";
         }
+        if (categories == null || categories.isEmpty()) {
+            categories = eventRepository.getAllCategories();
+        }
         if (categories.contains(0)) {
             throw new BadRequestException("Category with id=0 is not exist");
-        }
-        if (categories.isEmpty()) {
-            categories = eventRepository.getAllCategories();
         }
         LocalDateTime start;
         if (rangeStart == null) {
@@ -77,17 +77,21 @@ public class PublicEventServiceImpl implements PublicEventService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         hitDto.setTimestamp(LocalDateTime.now().format(formatter));
 
+
+        hitClient.addHit(hitDto);
+
+
         for (Event event : events) {
             shortEventDtos.add(EventMapper.toEventShortDto(event));
 
-            hitClient.addHit(hitDto);
+            /*hitClient.addHit(hitDto);
              List<HitStatDto> hitStatDtoList = hitClient.getStats(LocalDateTime.now().minusYears(5).format(formatter),
                             LocalDateTime.now().plusYears(5).format(formatter), List.of(hitDto.getUri()), true);
 
              Integer views = hitStatDtoList.getFirst().getHits();
 
             event.setViews(views);
-            eventRepository.save(event);
+            eventRepository.save(event);*/
         }
         return shortEventDtos;
     }
