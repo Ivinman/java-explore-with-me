@@ -1,5 +1,6 @@
 package ru.practicum;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -23,8 +24,25 @@ public class BaseClient {
         return makeAndSendRequest(HttpMethod.POST, path, null, body);
     }
 
-    protected <T> ResponseEntity<Object> get(String path, @Nullable Map<String, Object> parameters) {
-        return makeAndSendRequest(HttpMethod.GET, path, parameters, null);
+    protected List<HitStatDto> get(String path, @Nullable Map<String, Object> parameters) {
+        return makeAndSendGetRequest(HttpMethod.GET, path, parameters);
+    }
+
+    private List<HitStatDto> makeAndSendGetRequest(HttpMethod method, String path,
+                                                                   @Nullable Map<String, Object> parameters) {
+        ParameterizedTypeReference<List<HitStatDto>> typeReference = new ParameterizedTypeReference<List<HitStatDto>>() {};
+
+        try {
+            if (parameters != null) {
+                var explorewithmeServerResponse = rest.exchange(path, method, null, typeReference, parameters);
+                return explorewithmeServerResponse.getBody();
+            } else {
+                var explorewithmeServerResponse = rest.exchange(path, method, null, typeReference);
+                return explorewithmeServerResponse.getBody();
+            }
+        } catch (HttpStatusCodeException e) {
+            throw new RuntimeException();
+        }
     }
 
     private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path,
@@ -32,6 +50,7 @@ public class BaseClient {
         HttpEntity<T> requestEntity = new HttpEntity<>(body, defaultHeaders());
 
         ResponseEntity<Object> explorewithmeServerResponse;
+
         try {
             if (parameters != null) {
                 explorewithmeServerResponse = rest.exchange(path, method, requestEntity, Object.class, parameters);
@@ -52,6 +71,7 @@ public class BaseClient {
     }
 
     private static ResponseEntity<Object> prepareClientResponse(ResponseEntity<Object> response) {
+
         if (response.getStatusCode().is2xxSuccessful()) {
             return response;
         }

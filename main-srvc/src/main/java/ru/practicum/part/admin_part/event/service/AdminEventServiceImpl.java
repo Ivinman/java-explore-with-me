@@ -132,6 +132,9 @@ public class AdminEventServiceImpl implements AdminEventService {
             event.setTitle(eventWithStateActionDto.getTitle());
         }
 
+        if (eventWithStateActionDto.getPaid() != null) {
+            event.setPaid(eventWithStateActionDto.getPaid());
+        }
 
 
         eventRepository.save(event);

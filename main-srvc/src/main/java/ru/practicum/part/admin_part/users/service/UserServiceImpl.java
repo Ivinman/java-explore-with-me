@@ -40,8 +40,18 @@ public class UserServiceImpl implements UserService {
         if (userDto.getEmail().length() < 6) {
             throw new BadRequestException("Email is too short");
         }
+
         if (userDto.getEmail().length() > 254) {
             throw new BadRequestException("Email is too long");
+        }
+
+        String[] emailSplit = userDto.getEmail().split("@");
+        String[] emailDomSplit = emailSplit[1].split("\\.");
+        if (emailSplit[0].length() > 64) {
+            throw new BadRequestException("Email name is too long");
+        }
+        if (emailDomSplit[0].length() > 63) {
+            throw new BadRequestException("Email domain is too long");
         }
 
         return userRepository.save(UserMapper.toUser(userDto));

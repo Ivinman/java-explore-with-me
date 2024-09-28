@@ -44,7 +44,7 @@ public class EventMapper {
         fullEventDto.setCreatedOn(event.getCreatedOn());
         fullEventDto.setDescription(event.getDescription());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         fullEventDto.setEventDate(event.getEventDate().toLocalDateTime().format(formatter));
         //fullEventDto.setEventDate(event.getEventDate());
 
@@ -67,7 +67,7 @@ public class EventMapper {
         shortEventDto.setCategory(event.getCategory());
         shortEventDto.setConfirmedRequests(event.getConfirmedRequests());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         shortEventDto.setEventDate(event.getEventDate().toLocalDateTime().format(formatter));
         //shortEventDto.setEventDate(event.getEventDate());
 

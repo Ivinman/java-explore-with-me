@@ -70,9 +70,7 @@ public class Event {
     @Column(name = "views")
     private Integer views;
 
-    //
     @ManyToOne
     @JoinColumn(name = "compilation_id")
-    //@JoinTable(name = "compilation_id", joinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "compilation_id", referencedColumnName = "id"))
     private Compilation compilation;
 }

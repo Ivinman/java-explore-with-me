@@ -40,9 +40,14 @@ public class HitServiceImpl implements HitService {
 
     private List<HitStatDto> hitStatDtosUnique(String start, String end, List<String> uris) {
         List<String> ips = hitRepository.getDistinctIp();
+
+        uris.set(0, uris.getFirst().substring(1));
+        uris.set(uris.size() - 1, uris.getLast().replaceAll("]", ""));
+
         List<Hit> hitList = hitRepository.getHitByUrisAndTime(uris,
                 Timestamp.valueOf(start), Timestamp.valueOf(end));
         Map<String, HitStatDto> hitMap = new HashMap<>();
+
         for (String uri : uris) {
             int hits = 0;
             for (String ip : ips) {

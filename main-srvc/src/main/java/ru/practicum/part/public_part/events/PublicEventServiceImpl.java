@@ -1,5 +1,6 @@
 package ru.practicum.part.public_part.events;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -10,6 +11,7 @@ import ru.practicum.HitStatDto;
 import ru.practicum.dto.event.EventMapper;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.dto.event.ShortEventDto;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.event.Event;
 import ru.practicum.storage.event.EventRepository;
@@ -52,6 +54,9 @@ public class PublicEventServiceImpl implements PublicEventService {
         if (sort.equals("EVENT_DATE")) {
             sort = "eventDate";
         }
+        if (sort.equals("VIEWS")) {
+            sort = "views";
+        }
 
         List<Event> events = new ArrayList<>(eventRepository.getPublicEventsWithText(categories, paid,
                         Timestamp.valueOf(start), Timestamp.valueOf(end), "PUBLISHED", text,
@@ -74,11 +79,10 @@ public class PublicEventServiceImpl implements PublicEventService {
             shortEventDtos.add(EventMapper.toEventShortDto(event));
 
             hitClient.addHit(hitDto);
-             List<HitStatDto> hitStatDtoList = (List<HitStatDto>) hitClient.getStats(LocalDateTime.now().minusYears(5).format(formatter),
-                            LocalDateTime.now().plusYears(5).format(formatter), List.of(hitDto.getUri()), true)
-                    .getBody();
-             Integer views = hitStatDtoList.getFirst().getHits();
+             List<HitStatDto> hitStatDtoList = hitClient.getStats(LocalDateTime.now().minusYears(5).format(formatter),
+                            LocalDateTime.now().plusYears(5).format(formatter), List.of(hitDto.getUri()), true);
 
+             Integer views = hitStatDtoList.getFirst().getHits();
 
             event.setViews(views);
             eventRepository.save(event);
@@ -105,7 +109,7 @@ public class PublicEventServiceImpl implements PublicEventService {
         hitDto.setTimestamp(LocalDateTime.now().format(formatter));
 
         hitClient.addHit(hitDto);
-        List<HitStatDto> hitStatDtoList = (List<HitStatDto>) hitClient.getStats(LocalDateTime.now().minusYears(5).format(formatter),
+        List<HitStatDto> hitStatDtoList = hitClient.getStats(LocalDateTime.now().minusYears(5).format(formatter),
                         LocalDateTime.now().plusYears(5).format(formatter), List.of(hitDto.getUri()), true);
         Integer views = hitStatDtoList.getFirst().getHits();
 

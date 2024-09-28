@@ -26,8 +26,8 @@ public class HitClient extends BaseClient {
         return post("/hit", hitDto);
     }
 
-    public ResponseEntity<Object> getStats(String start, String end,
-                                           List<String> uris, Boolean unique) {
+    public List<HitStatDto> getStats(String start, String end,
+                                     List<String> uris, Boolean unique) {
         Map<String, Object> parameters;
         if (uris == null) {
             parameters = Map.of("start", start,
