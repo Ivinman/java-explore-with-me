@@ -27,10 +27,6 @@ public class HitServiceImpl implements HitService {
 
     @Override
     public List<HitStatDto> getStats(String start, String end, List<String> uris, Boolean unique) throws Exception {
-        System.out.println("unique = "+ unique);
-        System.out.println("uris = " + uris);
-
-
         if (Timestamp.valueOf(end).before(Timestamp.valueOf(LocalDateTime.now()))) {
             throw new BadRequestException("End of event is before current date");
         }
