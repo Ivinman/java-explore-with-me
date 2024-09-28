@@ -1,6 +1,7 @@
 package ru.practicum;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -16,7 +17,7 @@ public class HitClient extends BaseClient {
     public HitClient(RestTemplateBuilder builder) {
         super(
                 builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory("http://localhost:9090"))
+                        .uriTemplateHandler(new DefaultUriBuilderFactory("http://stats-server:9090"))
                         .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
                         .build()
         );
