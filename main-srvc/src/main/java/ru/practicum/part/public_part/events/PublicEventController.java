@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.dto.event.ShortEventDto;
+import ru.practicum.part.public_part.events.service.PublicEventService;
 
 import java.util.List;
 

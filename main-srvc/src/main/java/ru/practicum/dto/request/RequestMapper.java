@@ -1,4 +1,6 @@
-package ru.practicum.part.private_part.requests;
+package ru.practicum.dto.request;
+
+import ru.practicum.model.request.Request;
 
 import java.time.format.DateTimeFormatter;
 

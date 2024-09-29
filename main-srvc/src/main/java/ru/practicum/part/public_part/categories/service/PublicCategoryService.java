@@ -1,4 +1,4 @@
-package ru.practicum.part.public_part.categories;
+package ru.practicum.part.public_part.categories.service;
 
 import ru.practicum.model.category.Category;
 

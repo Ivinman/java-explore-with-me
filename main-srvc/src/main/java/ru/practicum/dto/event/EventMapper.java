@@ -22,20 +22,6 @@ public class EventMapper {
         return event;
     }
 
-    public static Event toEventWithStateAction(EventWithStateActionDto eventDto) {
-        Event event = new Event();
-        event.setAnnotation(eventDto.getAnnotation());
-        //event.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
-        event.setDescription(eventDto.getDescription());
-        event.setEventDate(Timestamp.valueOf(eventDto.getEventDate()));
-        event.setPaid(eventDto.getPaid());
-        event.setParticipantLimit(eventDto.getParticipantLimit());
-        event.setRequestModeration(eventDto.getRequestModeration());
-        event.setState("PENDING");
-        event.setTitle(eventDto.getTitle());
-        return event;
-    }
-
     public static FullEventDto toFullEventDto(Event event) {
         FullEventDto fullEventDto = new FullEventDto();
         fullEventDto.setAnnotation(event.getAnnotation());
@@ -46,7 +32,6 @@ public class EventMapper {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         fullEventDto.setEventDate(event.getEventDate().toLocalDateTime().format(formatter));
-        //fullEventDto.setEventDate(event.getEventDate());
 
         fullEventDto.setId(event.getId());
         fullEventDto.setInitiator(UserMapper.toUserWithoutEmailDto(event.getInitiator()));
@@ -69,7 +54,6 @@ public class EventMapper {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         shortEventDto.setEventDate(event.getEventDate().toLocalDateTime().format(formatter));
-        //shortEventDto.setEventDate(event.getEventDate());
 
         shortEventDto.setId(event.getId());
         shortEventDto.setInitiator(UserMapper.toUserWithoutEmailDto(event.getInitiator()));

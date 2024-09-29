@@ -3,7 +3,6 @@ package ru.practicum.model.compilation;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
 @Table(name = "compilations")
 @Getter

@@ -1,8 +1,7 @@
-package ru.practicum.part.public_part.categories;
+package ru.practicum.part.public_part.categories.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.category.Category;
 import ru.practicum.storage.category.CategoriesRepository;
@@ -15,12 +14,8 @@ public class PublicCategoryServiceImpl implements  PublicCategoryService {
     private final CategoriesRepository categoriesRepository;
 
     @Override
-    public List<Category> getCategories(Integer from, Integer size) throws Exception {
-        try {
-            return categoriesRepository.findAll().stream().skip(from).limit(size).toList();
-        } catch (Exception e) {
-            throw new BadRequestException("Fields filled incorrectly");
-        }
+    public List<Category> getCategories(Integer from, Integer size) {
+        return categoriesRepository.findAll().stream().skip(from).limit(size).toList();
     }
 
     @Override

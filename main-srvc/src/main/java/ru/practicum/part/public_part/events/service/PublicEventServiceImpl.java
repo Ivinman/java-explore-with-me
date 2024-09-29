@@ -1,4 +1,4 @@
-package ru.practicum.part.public_part.events;
+package ru.practicum.part.public_part.events.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -77,34 +78,24 @@ public class PublicEventServiceImpl implements PublicEventService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         hitDto.setTimestamp(LocalDateTime.now().format(formatter));
 
-
         hitClient.addHit(hitDto);
-
 
         for (Event event : events) {
             shortEventDtos.add(EventMapper.toEventShortDto(event));
-
-            /*hitClient.addHit(hitDto);
-             List<HitStatDto> hitStatDtoList = hitClient.getStats(LocalDateTime.now().minusYears(5).format(formatter),
-                            LocalDateTime.now().plusYears(5).format(formatter), List.of(hitDto.getUri()), true);
-
-             Integer views = hitStatDtoList.getFirst().getHits();
-
-            event.setViews(views);
-            eventRepository.save(event);*/
         }
         return shortEventDtos;
     }
 
     @Override
     public FullEventDto getEvent(Integer eventId, HttpServletRequest request) throws Exception {
-        if (eventRepository.findById(eventId).isEmpty()) {
+        Optional<Event> eventFromDb = eventRepository.findById(eventId);
+        if (eventFromDb.isEmpty()) {
             throw new NotFoundException("Event with id=" + eventId + " was not found");
         }
-        if (!eventRepository.findById(eventId).get().getState().equals("PUBLISHED")) {
+        if (!eventFromDb.get().getState().equals("PUBLISHED")) {
             throw new NotFoundException("Event with id=" + eventId + " is not published");
         }
-        Event event = eventRepository.findById(eventId).get();
+        Event event = eventFromDb.get();
 
         HitDto hitDto = new HitDto();
         hitDto.setApp("main-srvc");

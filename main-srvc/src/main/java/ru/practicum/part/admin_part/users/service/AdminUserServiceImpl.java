@@ -10,12 +10,11 @@ import ru.practicum.dto.user.UserDto;
 import ru.practicum.dto.user.UserMapper;
 import ru.practicum.model.user.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class AdminUserServiceImpl implements AdminUserService {
     private final UserRepository userRepository;
 
     @Override
@@ -30,7 +29,6 @@ public class UserServiceImpl implements UserService {
         if (userDto.getEmail() == null || userDto.getEmail().isEmpty() || userDto.getEmail().isBlank()) {
             throw new BadRequestException("Field email filled incorrectly");
         }
-
         if (userDto.getName().length() < 2) {
             throw new BadRequestException("Name is too short");
         }
@@ -40,7 +38,6 @@ public class UserServiceImpl implements UserService {
         if (userDto.getEmail().length() < 6) {
             throw new BadRequestException("Email is too short");
         }
-
         if (userDto.getEmail().length() > 254) {
             throw new BadRequestException("Email is too long");
         }
@@ -66,18 +63,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsers(List<Integer> userIds, Integer from, Integer size) throws Exception {
-        try {
-            List<User> usersFromDb = new ArrayList<>();
-            if (userIds == null) {
-                usersFromDb = userRepository.findAll();
-                return usersFromDb.stream().skip(from).limit(size).toList();
-            }
-            usersFromDb = userRepository.findByUserIds(userIds);
+    public List<User> getUsers(List<Integer> userIds, Integer from, Integer size) {
+        List<User> usersFromDb;
+        if (userIds == null) {
+            usersFromDb = userRepository.findAll();
             return usersFromDb.stream().skip(from).limit(size).toList();
-        } catch (Exception e) {
-            throw new BadRequestException("Fields filled incorrectly");
         }
-
+        usersFromDb = userRepository.findByUserIds(userIds);
+        return usersFromDb.stream().skip(from).limit(size).toList();
     }
 }

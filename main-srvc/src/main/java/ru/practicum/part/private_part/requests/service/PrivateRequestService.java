@@ -1,4 +1,6 @@
-package ru.practicum.part.private_part.requests;
+package ru.practicum.part.private_part.requests.service;
+
+import ru.practicum.dto.request.RequestDto;
 
 import java.util.List;
 

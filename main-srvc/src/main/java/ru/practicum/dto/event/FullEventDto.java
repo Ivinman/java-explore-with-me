@@ -13,9 +13,7 @@ public class FullEventDto {
     private Integer confirmedRequests;
     private Timestamp createdOn;
     private String description;
-
     private String eventDate;
-
     private Integer id;
     private UserWithoutEmailDto initiator;
     private LocationDto location;

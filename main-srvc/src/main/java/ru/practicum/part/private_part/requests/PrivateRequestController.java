@@ -3,6 +3,8 @@ package ru.practicum.part.private_part.requests;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.dto.request.RequestDto;
+import ru.practicum.part.private_part.requests.service.PrivateRequestService;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class PrivateRequestController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public RequestDto addRequest(@PathVariable Integer userId,
-                              @RequestParam Integer eventId) throws Exception {
+                                 @RequestParam Integer eventId) throws Exception {
         return requestService.addRequest(userId, eventId);
     }
 

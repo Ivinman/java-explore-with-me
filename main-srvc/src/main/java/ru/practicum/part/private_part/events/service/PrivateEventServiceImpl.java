@@ -3,15 +3,20 @@ package ru.practicum.part.private_part.events.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.dto.event.*;
+import ru.practicum.dto.request.RequestEditDto;
+import ru.practicum.dto.request.RequestResponseDto;
+import ru.practicum.enums.EventState;
+import ru.practicum.enums.EventStateAction;
+import ru.practicum.enums.RequestState;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.ForbiddenException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.event.Location;
-import ru.practicum.part.private_part.requests.Request;
-import ru.practicum.part.private_part.requests.RequestDto;
-import ru.practicum.part.private_part.requests.RequestMapper;
-import ru.practicum.part.private_part.requests.RequestRepository;
+import ru.practicum.model.request.Request;
+import ru.practicum.dto.request.RequestDto;
+import ru.practicum.dto.request.RequestMapper;
+import ru.practicum.storage.request.RequestRepository;
 import ru.practicum.storage.category.CategoriesRepository;
 import ru.practicum.storage.event.EventRepository;
 import ru.practicum.storage.event.LocationRepository;
@@ -35,7 +40,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
     @Override
     public FullEventDto addEvent(Integer userId, EventDto eventDto) throws Exception {
-
+        userValid(userId);
         if (eventDto.getAnnotation() == null
                 || eventDto.getAnnotation().isBlank()
                 || eventDto.getAnnotation().isEmpty()) {
@@ -55,13 +60,16 @@ public class PrivateEventServiceImpl implements PrivateEventService {
             throw new BadRequestException("Field title filled incorrectly");
         }
 
-        lengthCheck(eventDto);
+        annotationLengthValid(eventDto);
+        descriptionLengthValid(eventDto);
+        titleLengthValid(eventDto);
 
         if (eventDto.getEventDate() == null
                 || eventDto.getEventDate().isBlank()
                 || eventDto.getEventDate().isEmpty()) {
             throw new BadRequestException("Field eventDate filled incorrectly");
         }
+
         if (eventDto.getLocation() == null) {
             throw new BadRequestException("Field location filled incorrectly");
         }
@@ -83,6 +91,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         if (eventDto.getPaid() == null) {
             eventDto.setPaid(false);
         }
+
         if (eventDto.getRequestModeration() == null) {
             eventDto.setRequestModeration(true);
         }
@@ -102,6 +111,8 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
     @Override
     public List<ShortEventDto> getEvents(Integer userId, Integer from, Integer size) throws Exception {
+        userValid(userId);
+
         List<Event> events = eventRepository.findByInitiatorId(userId);
         List<ShortEventDto> shortEventDtos = new ArrayList<>();
         for (Event event : events) {
@@ -112,6 +123,8 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
     @Override
     public FullEventDto getEventById(Integer userId, Integer eventId) throws Exception {
+        userValid(userId);
+
         if (eventRepository.findById(eventId).isPresent()) {
             return EventMapper.toFullEventDto(eventRepository.findById(eventId).get());
         }
@@ -120,35 +133,27 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
     @Override
     public FullEventDto editEvent(Integer userId, Integer eventId, EventWithStateActionDto eventDto) throws Exception {
+        userValid(userId);
+
         Event event;
         if (eventRepository.findById(eventId).isPresent()) {
             event = eventRepository.findById(eventId).get();
         } else {
             throw new NotFoundException("Event with id=" + eventId + " was not found");
         }
-        if (event.getState().equals("PUBLISHED")) {
+        if (event.getState().equals(EventState.PUBLISHED.name())) {
             throw new ForbiddenException("Event must not be published");
         }
 
         if (eventDto.getAnnotation() != null) {
-            if (eventDto.getAnnotation().length() < 20) {
-                throw new BadRequestException("Annotation is too short");
-            }
-            if (eventDto.getAnnotation().length() > 2000) {
-                throw new BadRequestException("Annotation is too long");
-            }
+            annotationLengthValid(eventDto);
             event.setAnnotation(eventDto.getAnnotation());
         }
         if (eventDto.getCategory() != null) {
             event.setCategory(categoriesRepository.findById(eventDto.getCategory()).get());
         }
         if (eventDto.getDescription() != null) {
-            if (eventDto.getDescription().length() < 20) {
-                throw new BadRequestException("Description is too short");
-            }
-            if (eventDto.getDescription().length() > 7000) {
-                throw new BadRequestException("Description is too long");
-            }
+            descriptionLengthValid(eventDto);
             event.setDescription(eventDto.getDescription());
         }
         if (eventDto.getEventDate() != null) {
@@ -182,23 +187,17 @@ public class PrivateEventServiceImpl implements PrivateEventService {
             event.setRequestModeration(eventDto.getRequestModeration());
         }
 
-        if (eventDto.getStateAction() == null || eventDto.getStateAction().equals("SEND_TO_REVIEW")) {
-            event.setState("PENDING");
+        if (eventDto.getStateAction() == null
+                || eventDto.getStateAction().equals(EventStateAction.SEND_TO_REVIEW.name())) {
+            event.setState(EventState.PENDING.name());
         } else {
-            event.setState("CANCELED");
+            event.setState(EventState.CANCELED.name());
         }
 
         if (eventDto.getTitle() != null) {
-            if (eventDto.getTitle().length() < 3) {
-                throw new BadRequestException("Title is too short");
-            }
-            if (eventDto.getTitle().length() > 120) {
-                throw new BadRequestException("Title is too long");
-            }
+            titleLengthValid(eventDto);
             event.setTitle(eventDto.getTitle());
         }
-
-        //lengthCheck(eventDto);
 
         eventRepository.save(event);
         return EventMapper.toFullEventDto(event);
@@ -206,6 +205,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
     @Override
     public List<RequestDto> getRequests(Integer userId, Integer eventId) throws Exception {
+        userValid(userId);
         if (userId == null || eventId == null) {
             throw new BadRequestException("Fields filled incorrectly");
         }
@@ -217,7 +217,8 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     }
 
     @Override
-    public RequestResponse editRequests(Integer userId, Integer eventId, RequestEditDto requestEditDto) throws  Exception {
+    public RequestResponseDto editRequests(Integer userId, Integer eventId, RequestEditDto requestEditDto) throws  Exception {
+        userValid(userId);
         if (userId == null || eventId == null) {
             throw new BadRequestException("Fields filled incorrectly");
         }
@@ -232,66 +233,82 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         }
 
         String status;
-        if (requestEditDto.getStatus().equals("CONFIRMED")) {
-            status = "CONFIRMED";
+        if (requestEditDto.getStatus().equals(RequestState.CONFIRMED.name())) {
+            status = RequestState.CONFIRMED.name();
         } else {
-            status = "REJECTED";
+            status = RequestState.REJECTED.name();
         }
-        RequestResponse requestResponse = new RequestResponse();
-        requestResponse.setRejectedRequests(new ArrayList<>());
-        requestResponse.setConfirmedRequests(new ArrayList<>());
+
+        RequestResponseDto requestResponseDto = new RequestResponseDto();
+        requestResponseDto.setRejectedRequests(new ArrayList<>());
+        requestResponseDto.setConfirmedRequests(new ArrayList<>());
         for (Integer reqId : requestEditDto.getRequestIds()) {
-            if (!requestRepository.findById(reqId).get().getStatus().equals("PENDING")) {
+            Request requestFromDb = requestRepository.findById(reqId).get();
+            if (!requestFromDb.getStatus().equals(RequestState.PENDING.name())) {
                 throw new ConflictException("For the requested operation the conditions are not met.",
                         "Request status is not pending");
             }
-            if (eventRepository.findById(eventId).get().getParticipantLimit()
-                    .equals(eventRepository.findById(eventId).get().getConfirmedRequests())
-                    && eventRepository.findById(eventId).get().getParticipantLimit() != 0) {
-                requestResponse.getRejectedRequests().add(RequestMapper.toDto(requestRepository.findById(reqId).get()));
-                Request request = requestRepository.findById(reqId).get();
-                request.setStatus("REJECTED");
-                requestRepository.save(request);
+
+            Event eventFromDb = eventRepository.findById(eventId).get();
+            if (eventFromDb.getParticipantLimit()
+                    .equals(eventFromDb.getConfirmedRequests())
+                    && eventFromDb.getParticipantLimit() != 0) {
+                requestResponseDto.getRejectedRequests().add(RequestMapper.toDto(requestFromDb));
+                requestFromDb.setStatus("REJECTED");
+                requestRepository.save(requestFromDb);
                 continue;
             }
 
             Request request = requestRepository.findById(reqId).get();
-            if (status.equals("CONFIRMED")) {
-                request.setStatus("CONFIRMED");
-                requestResponse.getConfirmedRequests().add(RequestMapper.toDto(request));
-
+            if (status.equals(RequestState.CONFIRMED.name())) {
+                request.setStatus(RequestState.CONFIRMED.name());
+                requestResponseDto.getConfirmedRequests().add(RequestMapper.toDto(request));
 
                 Integer confReq = eventRepository.findById(eventId).get().getConfirmedRequests();
                 eventRepository.findById(eventId).get().setConfirmedRequests(confReq + 1);
                 eventRepository.save(eventRepository.findById(eventId).get());
             } else {
-                request.setStatus("REJECTED");
-                requestResponse.getRejectedRequests().add(RequestMapper.toDto(requestRepository.findById(reqId).get()));
+                request.setStatus(RequestState.REJECTED.name());
+                requestResponseDto.getRejectedRequests().add(RequestMapper.toDto(request));
             }
-            //Request request = requestRepository.findById(reqId).get();
             request.setStatus(status);
             requestRepository.save(request);
         }
-        return requestResponse;
+        return requestResponseDto;
     }
 
-    public void deleteEvent(Integer eventId) {
+    public void deleteEvent(Integer eventId) throws Exception {
+        if (eventRepository.findById(eventId).isEmpty()) {
+            throw new NotFoundException("Event with id=" + eventId + " not found");
+        }
         eventRepository.deleteById(eventId);
     }
 
-    private void lengthCheck(EventDto eventDto) throws Exception {
-        if (eventDto.getDescription().length() < 20) {
-            throw new BadRequestException("Description is too short");
+    private void userValid(Integer userId) throws Exception {
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new BadRequestException("User is not authorized");
         }
-        if (eventDto.getDescription().length() > 7000) {
-            throw new BadRequestException("Description is too long");
-        }
+    }
+
+    private void annotationLengthValid(EventDto eventDto) throws Exception {
         if (eventDto.getAnnotation().length() < 20) {
             throw new BadRequestException("Annotation is too short");
         }
         if (eventDto.getAnnotation().length() > 2000) {
             throw new BadRequestException("Annotation is too long");
         }
+    }
+
+    private void descriptionLengthValid(EventDto eventDto) throws Exception {
+        if (eventDto.getDescription().length() < 20) {
+            throw new BadRequestException("Description is too short");
+        }
+        if (eventDto.getDescription().length() > 7000) {
+            throw new BadRequestException("Description is too long");
+        }
+    }
+
+    private void titleLengthValid(EventDto eventDto) throws Exception {
         if (eventDto.getTitle().length() < 3) {
             throw new BadRequestException("Title is too short");
         }

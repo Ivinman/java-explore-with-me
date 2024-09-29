@@ -5,7 +5,7 @@ import ru.practicum.model.user.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface AdminUserService {
     User addUser(UserDto userDto) throws Exception;
 
     void deleteUser(Integer userId) throws Exception;

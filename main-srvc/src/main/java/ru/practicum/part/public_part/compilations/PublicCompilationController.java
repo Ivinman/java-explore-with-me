@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/compilations")
 @RequiredArgsConstructor
-public class AdminCompilationController {
+public class PublicCompilationController {
     private final PublicCompilationService compService;
 
     @GetMapping

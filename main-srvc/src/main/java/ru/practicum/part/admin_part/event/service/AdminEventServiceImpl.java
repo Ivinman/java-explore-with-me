@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.practicum.dto.event.EventMapper;
 import ru.practicum.dto.event.EventWithStateActionDto;
 import ru.practicum.dto.event.FullEventDto;
+import ru.practicum.enums.EventState;
+import ru.practicum.enums.EventStateAction;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ForbiddenException;
 import ru.practicum.exception.NotFoundException;
@@ -27,9 +29,6 @@ public class AdminEventServiceImpl implements AdminEventService {
     @Override
     public List<FullEventDto> getEvents(List<Integer> userIds, List<String> states, List<Integer> categories,
                           String rangeStart, String rangeEnd, Integer from, Integer size) throws Exception {
-
-        System.out.println(categories);
-
         if (userIds == null) {
             userIds = eventRepository.getAllUserIds();
         }
@@ -66,26 +65,28 @@ public class AdminEventServiceImpl implements AdminEventService {
 
         if (eventWithStateActionDto.getStateAction() != null) {
             if (eventWithStateActionDto.getEventDate() != null) {
-                if (eventWithStateActionDto.getStateAction().equals("PUBLISH_EVENT")
+                if (eventWithStateActionDto.getStateAction().equals(EventStateAction.PUBLISH_EVENT.name())
                         && Duration.between(LocalDateTime.now(),
                         Timestamp.valueOf(eventWithStateActionDto.getEventDate()).toLocalDateTime()).toHours() <= 1) {
                     throw new ForbiddenException("Cannot publish the event because eventDate is too early");
                 }
             }
 
-            if (event.getState().equals("PUBLISHED") && (eventWithStateActionDto.getStateAction().equals("PUBLISH_EVENT")
-                    || eventWithStateActionDto.getStateAction().equals("REJECT_EVENT"))) {
+            if (event.getState().equals(EventState.PUBLISHED.name())
+                    && (eventWithStateActionDto.getStateAction().equals(EventStateAction.PUBLISH_EVENT.name())
+                    || eventWithStateActionDto.getStateAction().equals(EventStateAction.REJECT_EVENT.name()))) {
                 throw new ForbiddenException("Cannot publish the event because it's not in the right state: PUBLISHED");
             }
-            if (event.getState().equals("CANCELED") && (eventWithStateActionDto.getStateAction().equals("PUBLISH_EVENT")
-                    || eventWithStateActionDto.getStateAction().equals("REJECT_EVENT"))) {
+            if (event.getState().equals(EventState.CANCELED.name())
+                    && (eventWithStateActionDto.getStateAction().equals(EventStateAction.PUBLISH_EVENT.name())
+                    || eventWithStateActionDto.getStateAction().equals(EventStateAction.REJECT_EVENT.name()))) {
                 throw new ForbiddenException("Cannot publish the event because it's not in the right state: CANCELED");
             }
-            if (eventWithStateActionDto.getStateAction().equals("PUBLISH_EVENT")) {
-                event.setState("PUBLISHED");
+            if (eventWithStateActionDto.getStateAction().equals(EventStateAction.PUBLISH_EVENT.name())) {
+                event.setState(EventState.PUBLISHED.name());
             }
-            if (eventWithStateActionDto.getStateAction().equals("REJECT_EVENT")) {
-                event.setState("CANCELED");
+            if (eventWithStateActionDto.getStateAction().equals(EventStateAction.REJECT_EVENT.name())) {
+                event.setState(EventState.CANCELED.name());
             }
         }
 
@@ -98,9 +99,11 @@ public class AdminEventServiceImpl implements AdminEventService {
             }
             event.setAnnotation(eventWithStateActionDto.getAnnotation());
         }
+
         if (eventWithStateActionDto.getCategory() != null) {
             event.setCategory(categoriesRepository.findById(eventWithStateActionDto.getCategory()).get());
         }
+
         if (eventWithStateActionDto.getDescription() != null) {
             if (eventWithStateActionDto.getDescription().length() < 20) {
                 throw new BadRequestException("Description is too short");
@@ -110,13 +113,13 @@ public class AdminEventServiceImpl implements AdminEventService {
             }
             event.setDescription(eventWithStateActionDto.getDescription());
         }
+
         if (eventWithStateActionDto.getEventDate() != null) {
             if (Timestamp.valueOf(eventWithStateActionDto.getEventDate()).before(Timestamp.valueOf(LocalDateTime.now()))) {
                 throw new BadRequestException("Date is expired");
             }
             event.setEventDate(Timestamp.valueOf(eventWithStateActionDto.getEventDate()));
         }
-        //
 
         if (eventWithStateActionDto.getParticipantLimit() != null) {
             event.setParticipantLimit(eventWithStateActionDto.getParticipantLimit());
@@ -135,7 +138,6 @@ public class AdminEventServiceImpl implements AdminEventService {
         if (eventWithStateActionDto.getPaid() != null) {
             event.setPaid(eventWithStateActionDto.getPaid());
         }
-
 
         eventRepository.save(event);
         return EventMapper.toFullEventDto(event);

@@ -24,7 +24,6 @@ public class ErrorHandler {
         ));
     }
 
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequestExcep(final BadRequestException e) {

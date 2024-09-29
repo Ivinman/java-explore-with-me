@@ -10,7 +10,6 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import java.util.List;
 import java.util.Map;
 
-//"http://stats-server:9090" "http://localhost:9090"
 @Component
 public class HitClient extends BaseClient {
     @Autowired

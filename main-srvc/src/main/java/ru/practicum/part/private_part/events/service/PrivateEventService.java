@@ -4,7 +4,9 @@ import ru.practicum.dto.event.EventDto;
 import ru.practicum.dto.event.EventWithStateActionDto;
 import ru.practicum.dto.event.ShortEventDto;
 import ru.practicum.dto.event.FullEventDto;
-import ru.practicum.part.private_part.requests.RequestDto;
+import ru.practicum.dto.request.RequestEditDto;
+import ru.practicum.dto.request.RequestResponseDto;
+import ru.practicum.dto.request.RequestDto;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public interface PrivateEventService {
 
     List<RequestDto> getRequests(Integer userId, Integer eventId) throws Exception;
 
-    RequestResponse editRequests(Integer userId, Integer eventId, RequestEditDto requestEditDto) throws Exception;
+    RequestResponseDto editRequests(Integer userId, Integer eventId, RequestEditDto requestEditDto) throws Exception;
 
-    void deleteEvent(Integer eventId);
+    void deleteEvent(Integer eventId) throws Exception;
 }

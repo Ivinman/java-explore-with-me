@@ -11,6 +11,8 @@ import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.storage.event.EventRepository;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AdminCategoriesServiceImpl implements AdminCategoriesService {
@@ -24,13 +26,8 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
                 || categoryDto.getName().isEmpty()) {
             throw new BadRequestException("Field name filled incorrectly");
         }
-        if (categoriesRepository.findByName(categoryDto.getName()) != null) {
-            throw new ConflictException("Integrity constraint has been violated.",
-                    "Category already exist");
-        }
-        if (categoryDto.getName().length() > 50) {
-            throw new BadRequestException("Name is too long");
-        }
+        categoryExistValidation(categoryDto);
+        categoryNameValid(categoryDto);
         return categoriesRepository.save(CategoryMapper.toCategory(categoryDto));
     }
 
@@ -48,21 +45,34 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
 
     @Override
     public Category editCategory(Integer categoryId, CategoryDto categoryDto) throws Exception {
-        if (categoriesRepository.findById(categoryId).isEmpty()) {
-            throw new NotFoundException("Category with id=" + categoryId + " was not found");
+        Optional<Category> categoryFromDb = categoriesRepository.findById(categoryId);
+        categoryFoundValidation(categoryId, categoryFromDb);
+        if (!categoryFromDb.get().getName().equals(categoryDto.getName())) {
+            categoryExistValidation(categoryDto);
         }
-        if (!categoriesRepository.findById(categoryId).get().getName().equals(categoryDto.getName())) {
-            if (categoriesRepository.findByName(categoryDto.getName()) != null) {
-                throw new ConflictException("Integrity constraint has been violated.",
-                        "Category already exist");
-            }
+        categoryNameValid(categoryDto);
+
+        Category category = categoryFromDb.get();
+        category.setName(categoryDto.getName());
+        return categoriesRepository.save(category);
+    }
+
+    private void categoryExistValidation(CategoryDto categoryDto) throws Exception {
+        if (categoriesRepository.findByName(categoryDto.getName()) != null) {
+            throw new ConflictException("Integrity constraint has been violated.",
+                    "Category already exist");
         }
+    }
+
+    private void categoryFoundValidation(Integer catId, Optional<Category> category) throws Exception {
+        if (category.isEmpty()) {
+            throw new NotFoundException("Category with id=" + catId + " was not found");
+        }
+    }
+
+    private void categoryNameValid(CategoryDto categoryDto) throws Exception {
         if (categoryDto.getName().length() > 50) {
             throw new BadRequestException("Name is too long");
         }
-
-        Category category = categoriesRepository.findById(categoryId).get();
-        category.setName(categoryDto.getName());
-        return categoriesRepository.save(category);
     }
 }

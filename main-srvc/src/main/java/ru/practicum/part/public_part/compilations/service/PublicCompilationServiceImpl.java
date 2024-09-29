@@ -2,6 +2,7 @@ package ru.practicum.part.public_part.compilations.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.dto.compilation.CompilationMapper;
 import ru.practicum.dto.compilation.CompilationOutDto;
 import ru.practicum.dto.event.EventMapper;
 import ru.practicum.dto.event.ShortEventDto;
@@ -26,22 +27,11 @@ public class PublicCompilationServiceImpl implements PublicCompilationService {
         List<CompilationOutDto> compilationOutDtos = new ArrayList<>();
         if (pinned) {
             compilations = compilationRepository.findByPinned(true);
-            System.out.println(compilations);
         } else {
             compilations = compilationRepository.findByPinned(false);
         }
         for (Compilation compilation : compilations) {
-            List<ShortEventDto> events = new ArrayList<>();
-            for (Event event : eventRepository.findByCompilationId(compilation.getId())) {
-                events.add(EventMapper.toEventShortDto(event));
-            }
-            CompilationOutDto compilationOutDto = new CompilationOutDto();
-            compilationOutDto.setEvents(events);
-            compilationOutDto.setId(compilation.getId());
-            compilationOutDto.setPinned(compilation.getPinned());
-            compilationOutDto.setTitle(compilation.getTitle());
-
-            compilationOutDtos.add(compilationOutDto);
+            compilationOutDtos.add(getCompOutDto(compilation));
         }
         return compilationOutDtos.stream().skip(from).limit(size).toList();
     }
@@ -51,17 +41,20 @@ public class PublicCompilationServiceImpl implements PublicCompilationService {
         if (compilationRepository.findById(compId).isEmpty()) {
             throw new NotFoundException("Compilation with id=" + compId + " was not found");
         }
+
         Compilation compilation = compilationRepository.findById(compId).get();
 
+        return getCompOutDto(compilation);
+    }
+
+    private CompilationOutDto getCompOutDto(Compilation compilation) {
         List<ShortEventDto> events = new ArrayList<>();
         for (Event event : eventRepository.findByCompilationId(compilation.getId())) {
             events.add(EventMapper.toEventShortDto(event));
         }
-        CompilationOutDto compilationOutDto = new CompilationOutDto();
+        CompilationOutDto compilationOutDto = CompilationMapper.toCompOutDto(compilation);
         compilationOutDto.setEvents(events);
         compilationOutDto.setId(compilation.getId());
-        compilationOutDto.setPinned(compilation.getPinned());
-        compilationOutDto.setTitle(compilation.getTitle());
 
         return compilationOutDto;
     }

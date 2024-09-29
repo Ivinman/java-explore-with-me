@@ -3,6 +3,7 @@ package ru.practicum.part.public_part.categories;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.model.category.Category;
+import ru.practicum.part.public_part.categories.service.PublicCategoryService;
 
 import java.util.List;
 
