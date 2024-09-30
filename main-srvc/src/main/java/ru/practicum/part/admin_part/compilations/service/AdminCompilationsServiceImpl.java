@@ -85,7 +85,7 @@ public class AdminCompilationsServiceImpl implements AdminCompilationsService {
         return getCompilationOutDto(compilation, events, compilation);
     }
 
-    private CompilationOutDto getCompilationOutDto (Compilation compilation,
+    private CompilationOutDto getCompilationOutDto(Compilation compilation,
                                                     List<ShortEventDto> events, Compilation compFromDb) {
         CompilationOutDto compilationOutDto = CompilationMapper.toCompOutDto(compilation);
         compilationOutDto.setEvents(events);
