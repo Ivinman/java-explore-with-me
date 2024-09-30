@@ -11,6 +11,8 @@
 	</parent>
 
 	<name>Explore With Me</name>
+	<url>https://github.com/Ivinman/java-explore-with-me</url>
+
 	<modules>
 		<module>stat-srvc</module>
 		<module>main-srvc</module>

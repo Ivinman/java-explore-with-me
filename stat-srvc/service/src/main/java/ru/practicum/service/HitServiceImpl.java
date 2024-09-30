@@ -3,12 +3,14 @@ package ru.practicum.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.HitDto;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.model.HitMapper;
 import ru.practicum.HitStatDto;
 import ru.practicum.model.Hit;
 import ru.practicum.storage.HitRepository;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,7 +26,10 @@ public class HitServiceImpl implements HitService {
     }
 
     @Override
-    public List<HitStatDto> getStats(String start, String end, List<String> uris, Boolean unique) {
+    public List<HitStatDto> getStats(String start, String end, List<String> uris, Boolean unique) throws Exception {
+        if (Timestamp.valueOf(end).before(Timestamp.valueOf(LocalDateTime.now()))) {
+            throw new BadRequestException("End of event is before current date");
+        }
         if (uris == null) {
             List<String> allUris = hitRepository.getDistinctUri();
             if (!unique) {
@@ -40,9 +45,16 @@ public class HitServiceImpl implements HitService {
 
     private List<HitStatDto> hitStatDtosUnique(String start, String end, List<String> uris) {
         List<String> ips = hitRepository.getDistinctIp();
+
+        if (uris.getFirst().contains("[") || uris.getLast().contains("]")) {
+            uris.set(0, uris.getFirst().substring(1));
+            uris.set(uris.size() - 1, uris.getLast().replaceAll("]", ""));
+        }
+
         List<Hit> hitList = hitRepository.getHitByUrisAndTime(uris,
                 Timestamp.valueOf(start), Timestamp.valueOf(end));
         Map<String, HitStatDto> hitMap = new HashMap<>();
+
         for (String uri : uris) {
             int hits = 0;
             for (String ip : ips) {
