@@ -1,9 +1,11 @@
 package ru.practicum.part.admin_part.compilations;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.compilation.CompilationDto;
+import ru.practicum.dto.compilation.CompilationEditDto;
 import ru.practicum.dto.compilation.CompilationOutDto;
 import ru.practicum.part.admin_part.compilations.service.AdminCompilationsService;
 
@@ -15,7 +17,7 @@ public class AdminCompilationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public CompilationOutDto addCompilation(@RequestBody CompilationDto compilationDto) throws Exception {
+    public CompilationOutDto addCompilation(@RequestBody @Valid CompilationDto compilationDto) throws Exception {
         return adminCompilationsService.addComp(compilationDto);
     }
 
@@ -27,7 +29,7 @@ public class AdminCompilationController {
 
     @PatchMapping("/{compId}")
     public CompilationOutDto editComp(@PathVariable Integer compId,
-                                      @RequestBody CompilationDto compilationDto) throws Exception {
-        return adminCompilationsService.editComp(compId, compilationDto);
+                                      @RequestBody @Valid CompilationEditDto compilationEditDto) throws Exception {
+        return adminCompilationsService.editComp(compId, compilationEditDto);
     }
 }

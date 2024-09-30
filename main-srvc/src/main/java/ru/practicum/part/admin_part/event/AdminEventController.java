@@ -1,5 +1,6 @@
 package ru.practicum.part.admin_part.event;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.event.EventWithStateActionDto;
@@ -27,7 +28,7 @@ public class AdminEventController {
 
     @PatchMapping("/{eventId}")
     public FullEventDto editEvent(@PathVariable Integer eventId,
-                           @RequestBody EventWithStateActionDto eventWithStateActionDto) throws Exception {
+                           @RequestBody @Valid EventWithStateActionDto eventWithStateActionDto) throws Exception {
         return adminEventService.editEvent(eventId, eventWithStateActionDto);
     }
 }

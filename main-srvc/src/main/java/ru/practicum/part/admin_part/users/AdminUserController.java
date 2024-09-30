@@ -1,5 +1,6 @@
 package ru.practicum.part.admin_part.users;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class AdminUserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public User addUser(@RequestBody UserDto userDto) throws Exception {
+    public User addUser(@RequestBody @Valid UserDto userDto) throws Exception {
         return adminUserService.addUser(userDto);
     }
 

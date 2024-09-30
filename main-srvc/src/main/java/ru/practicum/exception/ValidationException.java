@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public class BadRequestException extends Exception {
-    public BadRequestException(final String message) {
+public class ValidationException extends Exception {
+    public ValidationException(final String message) {
         super(message);
     }
 

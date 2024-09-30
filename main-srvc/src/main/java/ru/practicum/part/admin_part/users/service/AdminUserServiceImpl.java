@@ -2,7 +2,7 @@ package ru.practicum.part.admin_part.users.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.exception.BadRequestException;
+import ru.practicum.exception.ValidationException;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.storage.user.UserRepository;
@@ -23,32 +23,14 @@ public class AdminUserServiceImpl implements AdminUserService {
             throw new ConflictException("Integrity constraint has been violated.",
                     "User already exist");
         }
-        if (userDto.getName() == null || userDto.getName().isEmpty() || userDto.getName().isBlank()) {
-            throw new BadRequestException("Field name filled incorrectly");
-        }
-        if (userDto.getEmail() == null || userDto.getEmail().isEmpty() || userDto.getEmail().isBlank()) {
-            throw new BadRequestException("Field email filled incorrectly");
-        }
-        if (userDto.getName().length() < 2) {
-            throw new BadRequestException("Name is too short");
-        }
-        if (userDto.getName().length() > 250) {
-            throw new BadRequestException("Name is too long");
-        }
-        if (userDto.getEmail().length() < 6) {
-            throw new BadRequestException("Email is too short");
-        }
-        if (userDto.getEmail().length() > 254) {
-            throw new BadRequestException("Email is too long");
-        }
 
         String[] emailSplit = userDto.getEmail().split("@");
         String[] emailDomSplit = emailSplit[1].split("\\.");
         if (emailSplit[0].length() > 64) {
-            throw new BadRequestException("Email name is too long");
+            throw new ValidationException("Email name is too long");
         }
         if (emailDomSplit[0].length() > 63) {
-            throw new BadRequestException("Email domain is too long");
+            throw new ValidationException("Email domain is too long");
         }
 
         return userRepository.save(UserMapper.toUser(userDto));

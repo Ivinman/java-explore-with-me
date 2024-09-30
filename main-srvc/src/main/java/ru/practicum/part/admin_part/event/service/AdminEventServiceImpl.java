@@ -7,7 +7,7 @@ import ru.practicum.dto.event.EventWithStateActionDto;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.enums.EventState;
 import ru.practicum.enums.EventStateAction;
-import ru.practicum.exception.BadRequestException;
+import ru.practicum.exception.ValidationException;
 import ru.practicum.exception.ForbiddenException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.event.Event;
@@ -61,8 +61,8 @@ public class AdminEventServiceImpl implements AdminEventService {
         if (eventRepository.findById(eventId).isEmpty()) {
             throw new NotFoundException("Event with id=" + eventId + " was not found");
         }
-        Event event = eventRepository.findById(eventId).get();
 
+        Event event = eventRepository.findById(eventId).get();
         if (eventWithStateActionDto.getStateAction() != null) {
             if (eventWithStateActionDto.getEventDate() != null) {
                 if (eventWithStateActionDto.getStateAction().equals(EventStateAction.PUBLISH_EVENT.name())
@@ -72,16 +72,12 @@ public class AdminEventServiceImpl implements AdminEventService {
                 }
             }
 
-            if (event.getState().equals(EventState.PUBLISHED.name())
+            if (!event.getState().equals(EventState.PENDING.name())
                     && (eventWithStateActionDto.getStateAction().equals(EventStateAction.PUBLISH_EVENT.name())
                     || eventWithStateActionDto.getStateAction().equals(EventStateAction.REJECT_EVENT.name()))) {
-                throw new ForbiddenException("Cannot publish the event because it's not in the right state: PUBLISHED");
+                throw new ForbiddenException("Cannot publish the event because it's not in the right state: " + event.getState());
             }
-            if (event.getState().equals(EventState.CANCELED.name())
-                    && (eventWithStateActionDto.getStateAction().equals(EventStateAction.PUBLISH_EVENT.name())
-                    || eventWithStateActionDto.getStateAction().equals(EventStateAction.REJECT_EVENT.name()))) {
-                throw new ForbiddenException("Cannot publish the event because it's not in the right state: CANCELED");
-            }
+
             if (eventWithStateActionDto.getStateAction().equals(EventStateAction.PUBLISH_EVENT.name())) {
                 event.setState(EventState.PUBLISHED.name());
             }
@@ -91,12 +87,6 @@ public class AdminEventServiceImpl implements AdminEventService {
         }
 
         if (eventWithStateActionDto.getAnnotation() != null) {
-            if (eventWithStateActionDto.getAnnotation().length() < 20) {
-                throw new BadRequestException("Annotation is too short");
-            }
-            if (eventWithStateActionDto.getAnnotation().length() > 2000) {
-                throw new BadRequestException("Annotation is too long");
-            }
             event.setAnnotation(eventWithStateActionDto.getAnnotation());
         }
 
@@ -105,18 +95,12 @@ public class AdminEventServiceImpl implements AdminEventService {
         }
 
         if (eventWithStateActionDto.getDescription() != null) {
-            if (eventWithStateActionDto.getDescription().length() < 20) {
-                throw new BadRequestException("Description is too short");
-            }
-            if (eventWithStateActionDto.getDescription().length() > 7000) {
-                throw new BadRequestException("Description is too long");
-            }
             event.setDescription(eventWithStateActionDto.getDescription());
         }
 
         if (eventWithStateActionDto.getEventDate() != null) {
             if (Timestamp.valueOf(eventWithStateActionDto.getEventDate()).before(Timestamp.valueOf(LocalDateTime.now()))) {
-                throw new BadRequestException("Date is expired");
+                throw new ValidationException("Date is expired");
             }
             event.setEventDate(Timestamp.valueOf(eventWithStateActionDto.getEventDate()));
         }
@@ -126,12 +110,6 @@ public class AdminEventServiceImpl implements AdminEventService {
         }
 
         if (eventWithStateActionDto.getTitle() != null) {
-            if (eventWithStateActionDto.getTitle().length() < 3) {
-                throw new BadRequestException("Title is too short");
-            }
-            if (eventWithStateActionDto.getTitle().length() > 120) {
-                throw new BadRequestException("Title is too long");
-            }
             event.setTitle(eventWithStateActionDto.getTitle());
         }
 

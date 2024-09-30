@@ -1,5 +1,6 @@
 package ru.practicum.part.private_part.events;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class PrivateEventsController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public FullEventDto addEvent(@PathVariable Integer userId,
-                                 @RequestBody EventDto eventDto) throws Exception {
+                                 @RequestBody @Valid EventDto eventDto) throws Exception {
         return privateEventService.addEvent(userId, eventDto);
     }
 
@@ -43,7 +44,7 @@ public class PrivateEventsController {
     @PatchMapping("/{eventId}")
     public FullEventDto editEvent(@PathVariable Integer userId,
                                   @PathVariable Integer eventId,
-                                  @RequestBody EventWithStateActionDto eventDto) throws Exception {
+                                  @RequestBody @Valid EventWithStateActionDto eventDto) throws Exception {
         return privateEventService.editEvent(userId, eventId, eventDto);
     }
 

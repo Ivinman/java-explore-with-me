@@ -6,7 +6,6 @@ import ru.practicum.dto.category.CategoryDto;
 import ru.practicum.dto.category.CategoryMapper;
 import ru.practicum.model.category.Category;
 import ru.practicum.storage.category.CategoriesRepository;
-import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.storage.event.EventRepository;
@@ -21,13 +20,7 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
 
     @Override
     public Category addCategory(CategoryDto categoryDto) throws Exception {
-        if (categoryDto.getName() == null
-                || categoryDto.getName().isBlank()
-                || categoryDto.getName().isEmpty()) {
-            throw new BadRequestException("Field name filled incorrectly");
-        }
         categoryExistValidation(categoryDto);
-        categoryNameValid(categoryDto);
         return categoriesRepository.save(CategoryMapper.toCategory(categoryDto));
     }
 
@@ -37,9 +30,7 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
             throw new ConflictException("For the requested operation the conditions are not met.",
                     "The category is not empty");
         }
-        if (categoriesRepository.findById(categoryId).isEmpty()) {
-            throw new NotFoundException("Category with id=" + categoryId + " was not found");
-        }
+        categoryFoundValidation(categoryId, categoriesRepository.findById(categoryId));
         categoriesRepository.deleteById(categoryId);
     }
 
@@ -50,7 +41,6 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
         if (!categoryFromDb.get().getName().equals(categoryDto.getName())) {
             categoryExistValidation(categoryDto);
         }
-        categoryNameValid(categoryDto);
 
         Category category = categoryFromDb.get();
         category.setName(categoryDto.getName());
@@ -67,12 +57,6 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
     private void categoryFoundValidation(Integer catId, Optional<Category> category) throws Exception {
         if (category.isEmpty()) {
             throw new NotFoundException("Category with id=" + catId + " was not found");
-        }
-    }
-
-    private void categoryNameValid(CategoryDto categoryDto) throws Exception {
-        if (categoryDto.getName().length() > 50) {
-            throw new BadRequestException("Name is too long");
         }
     }
 }

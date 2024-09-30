@@ -1,6 +1,7 @@
 package ru.practicum.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,7 +27,18 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBadRequestExcep(final BadRequestException e) {
+    public ErrorResponse handleValid(final MethodArgumentNotValidException e) {
+        return new ErrorResponse(Map.of(
+                "status", HttpStatus.BAD_REQUEST.toString(),
+                "reason", "Incorrectly made request.",
+                "message", e.getFieldError().getDefaultMessage(),
+                "timestamp", Timestamp.valueOf(LocalDateTime.now()).toString()
+        ));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidExcep(final ValidationException e) {
         return new ErrorResponse(e.getErrorMessage());
     }
 

@@ -10,7 +10,8 @@ import ru.practicum.HitStatDto;
 import ru.practicum.dto.event.EventMapper;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.dto.event.ShortEventDto;
-import ru.practicum.exception.BadRequestException;
+import ru.practicum.enums.EventState;
+import ru.practicum.exception.ValidationException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.event.Event;
 import ru.practicum.storage.event.EventRepository;
@@ -39,7 +40,7 @@ public class PublicEventServiceImpl implements PublicEventService {
             categories = eventRepository.getAllCategories();
         }
         if (categories.contains(0)) {
-            throw new BadRequestException("Category with id=0 is not exist");
+            throw new ValidationException("Category with id=0 is not exist");
         }
         LocalDateTime start;
         if (rangeStart == null) {
@@ -62,24 +63,14 @@ public class PublicEventServiceImpl implements PublicEventService {
         }
 
         List<Event> events = new ArrayList<>(eventRepository.getPublicEventsWithText(categories, paid,
-                        Timestamp.valueOf(start), Timestamp.valueOf(end), "PUBLISHED", text,
+                        Timestamp.valueOf(start), Timestamp.valueOf(end), EventState.PUBLISHED.name(), text,
                         Sort.by(Sort.Direction.ASC, sort))
                 .stream().skip(from).limit(size).toList());
         if (onlyAvailable) {
             events.removeIf(event -> event.getParticipantLimit() == 0);
         }
         List<ShortEventDto> shortEventDtos = new ArrayList<>();
-
-        HitDto hitDto = new HitDto();
-        hitDto.setApp("main-srvc");
-        hitDto.setUri(request.getRequestURI());
-        hitDto.setIp(request.getRemoteAddr());
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-        hitDto.setTimestamp(LocalDateTime.now().format(formatter));
-
-        hitClient.addHit(hitDto);
-
+        HitDto hitDto = getHitDto(request);
         for (Event event : events) {
             shortEventDtos.add(EventMapper.toEventShortDto(event));
         }
@@ -92,11 +83,23 @@ public class PublicEventServiceImpl implements PublicEventService {
         if (eventFromDb.isEmpty()) {
             throw new NotFoundException("Event with id=" + eventId + " was not found");
         }
-        if (!eventFromDb.get().getState().equals("PUBLISHED")) {
+        if (!eventFromDb.get().getState().equals(EventState.PUBLISHED.name())) {
             throw new NotFoundException("Event with id=" + eventId + " is not published");
         }
         Event event = eventFromDb.get();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        HitDto hitDto = getHitDto(request);
+        List<HitStatDto> hitStatDtoList = hitClient.getStats(LocalDateTime.now().minusYears(5).format(formatter),
+                        LocalDateTime.now().plusYears(5).format(formatter), List.of(hitDto.getUri()), true);
+        Integer views = hitStatDtoList.getFirst().getHits();
 
+        event.setViews(views);
+        eventRepository.save(event);
+
+        return EventMapper.toFullEventDto(event);
+    }
+
+    private HitDto getHitDto(HttpServletRequest request) {
         HitDto hitDto = new HitDto();
         hitDto.setApp("main-srvc");
         hitDto.setUri(request.getRequestURI());
@@ -106,13 +109,6 @@ public class PublicEventServiceImpl implements PublicEventService {
         hitDto.setTimestamp(LocalDateTime.now().format(formatter));
 
         hitClient.addHit(hitDto);
-        List<HitStatDto> hitStatDtoList = hitClient.getStats(LocalDateTime.now().minusYears(5).format(formatter),
-                        LocalDateTime.now().plusYears(5).format(formatter), List.of(hitDto.getUri()), true);
-        Integer views = hitStatDtoList.getFirst().getHits();
-
-        event.setViews(views);
-        eventRepository.save(event);
-
-        return EventMapper.toFullEventDto(event);
+        return hitDto;
     }
 }

@@ -1,5 +1,6 @@
 package ru.practicum.part.admin_part.category;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class AdminCategoriesController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Category addCategory(@RequestBody CategoryDto categoryDto) throws Exception {
+    public Category addCategory(@RequestBody @Valid CategoryDto categoryDto) throws Exception {
         return adminCategoriesService.addCategory(categoryDto);
     }
 
@@ -27,7 +28,7 @@ public class AdminCategoriesController {
 
     @PatchMapping("/{catId}")
     public Category editCategory(@PathVariable Integer catId,
-                             @RequestBody CategoryDto categoryDto) throws Exception {
+                             @RequestBody @Valid CategoryDto categoryDto) throws Exception {
         return adminCategoriesService.editCategory(catId, categoryDto);
     }
 }
