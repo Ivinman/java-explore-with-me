@@ -16,7 +16,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"pm.collectionVariables.set('user1', pm.response.json().id)"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -28,7 +28,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Louise Shanahan\",\r\n    \"email\":\"Josie97@yahoo.com\"\r\n}",
+							"raw": "{\r\n    \"name\":\"User 1\",\r\n    \"email\":\"User1@yahoo.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -52,12 +52,24 @@
 				},
 				{
 					"name": "Добавление второго пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('user2', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Alek Skar\",\r\n    \"email\":\"Skarle@yahoo.com\"\r\n}",
+							"raw": "{\r\n    \"name\":\"User 2\",\r\n    \"email\":\"User2@yahoo.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,12 +93,24 @@
 				},
 				{
 					"name": "Добавление категории",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('category1', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"circuit2186\"\r\n}",
+							"raw": "{\r\n    \"name\":\"TestCateg\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -110,12 +134,24 @@
 				},
 				{
 					"name": "Добавление события первого пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('event1', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"annotation\":\"Reprehenderit earum ipsam distinctio perferendis aliquid doloribus. Eum nobis perspiciatis. Quibusdam aut numquam provident. Ea sed dolor commodi error qui illo fugit eum. Laboriosam eos tenetur consequatur est.\",\r\n    \"category\":1,\r\n    \"description\":\"Doloribus molestias alias aspernatur voluptatum corrupti esse quis. Voluptatem sit fuga. Quidem dolorem sapiente asperiores et consequatur qui nisi quia qui. Qui rerum id.\\n \\rQuidem architecto explicabo unde et quasi nisi unde. Voluptatem inventore nulla quibusdam assumenda rerum ut. Ab tenetur saepe vel natus optio et quo qui. Recusandae dignissimos aut laudantium aliquid non quia. Cupiditate quis cupiditate quod aut neque aut nulla consequatur. Hic nemo facere voluptatibus.\\n \\rTempore repellat id est omnis vero. Vero vel commodi quasi accusamus rerum voluptatem. Soluta voluptas consectetur.\",\r\n    \"eventDate\":\"2024-10-01 22:27:24\",\r\n    \"location\":{\"lat\":-39.2645,\"lon\":154.8087},\r\n    \"paid\":\"true\",\r\n    \"participantLimit\":\"938\",\r\n    \"requestModeration\":\"true\",\r\n    \"title\":\"Delectus omnis consequatur quia enim quod perspiciatis inventore at.\"\r\n}",
+							"raw": "{\r\n    \"annotation\":\"Reprehenderit earum ipsam distinctio perferendis aliquid doloribus. Eum nobis perspiciatis. Quibusdam aut numquam provident. Ea sed dolor commodi error qui illo fugit eum. Laboriosam eos tenetur consequatur est.\",\r\n    \"category\":1,\r\n    \"description\":\"Doloribus molestias alias aspernatur voluptatum corrupti esse quis. Voluptatem sit fuga. Quidem dolorem sapiente asperiores et consequatur qui nisi quia qui. Qui rerum id.\\n \\rQuidem architecto explicabo unde et quasi nisi unde. Voluptatem inventore nulla quibusdam assumenda rerum ut. Ab tenetur saepe vel natus optio et quo qui. Recusandae dignissimos aut laudantium aliquid non quia. Cupiditate quis cupiditate quod aut neque aut nulla consequatur. Hic nemo facere voluptatibus.\\n \\rTempore repellat id est omnis vero. Vero vel commodi quasi accusamus rerum voluptatem. Soluta voluptas consectetur.\",\r\n    \"eventDate\":\"2025-10-01 22:27:24\",\r\n    \"location\":{\"lat\":-39.2645,\"lon\":154.8087},\r\n    \"paid\":\"true\",\r\n    \"participantLimit\":\"938\",\r\n    \"requestModeration\":\"true\",\r\n    \"title\":\"First title\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -123,7 +159,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/users/1/events",
+							"raw": "http://localhost:8080/users/{{user1}}/events",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -131,7 +167,7 @@
 							"port": "8080",
 							"path": [
 								"users",
-								"1",
+								"{{user1}}",
 								"events"
 							]
 						}
@@ -140,12 +176,24 @@
 				},
 				{
 					"name": "Добавление события от второго пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('event2', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"annotation\":\"Reprehenderit earum ipsam distinctio perferendis aliquid doloribus. Eum nobis perspiciatis. Quibusdam aut numquam provident. Ea sed dolor commodi error qui illo fugit eum. Laboriosam eos tenetur consequatur est.\",\r\n    \"category\":1,\r\n    \"description\":\"Doloribus molestias alias aspernatur voluptatum corrupti esse quis. Voluptatem sit fuga. Quidem dolorem sapiente asperiores et consequatur qui nisi quia qui. Qui rerum id.\\n \\rQuidem architecto explicabo unde et quasi nisi unde. Voluptatem inventore nulla quibusdam assumenda rerum ut. Ab tenetur saepe vel natus optio et quo qui. Recusandae dignissimos aut laudantium aliquid non quia. Cupiditate quis cupiditate quod aut neque aut nulla consequatur. Hic nemo facere voluptatibus.\\n \\rTempore repellat id est omnis vero. Vero vel commodi quasi accusamus rerum voluptatem. Soluta voluptas consectetur.\",\r\n    \"eventDate\":\"2024-10-01 22:27:24\",\r\n    \"location\":{\"lat\":-39.2645,\"lon\":154.8087},\r\n    \"paid\":\"true\",\r\n    \"participantLimit\":\"938\",\r\n    \"requestModeration\":\"true\",\r\n    \"title\":\"Second\"\r\n}",
+							"raw": "{\r\n    \"annotation\":\"Reprehenderit earum ipsam distinctio perferendis aliquid doloribus. Eum nobis perspiciatis. Quibusdam aut numquam provident. Ea sed dolor commodi error qui illo fugit eum. Laboriosam eos tenetur consequatur est.\",\r\n    \"category\":1,\r\n    \"description\":\"Doloribus molestias alias aspernatur voluptatum corrupti esse quis. Voluptatem sit fuga. Quidem dolorem sapiente asperiores et consequatur qui nisi quia qui. Qui rerum id.\\n \\rQuidem architecto explicabo unde et quasi nisi unde. Voluptatem inventore nulla quibusdam assumenda rerum ut. Ab tenetur saepe vel natus optio et quo qui. Recusandae dignissimos aut laudantium aliquid non quia. Cupiditate quis cupiditate quod aut neque aut nulla consequatur. Hic nemo facere voluptatibus.\\n \\rTempore repellat id est omnis vero. Vero vel commodi quasi accusamus rerum voluptatem. Soluta voluptas consectetur.\",\r\n    \"eventDate\":\"2025-10-01 22:27:24\",\r\n    \"location\":{\"lat\":-39.2645,\"lon\":154.8087},\r\n    \"paid\":\"true\",\r\n    \"participantLimit\":\"938\",\r\n    \"requestModeration\":\"true\",\r\n    \"title\":\"Second\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -153,7 +201,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/users/2/events",
+							"raw": "http://localhost:8080/users/{{user2}}/events",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -161,7 +209,7 @@
 							"port": "8080",
 							"path": [
 								"users",
-								"2",
+								"{{user2}}",
 								"events"
 							]
 						}
@@ -214,7 +262,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/user/1/comments/events/2",
+							"raw": "http://localhost:8080/user/{{user1}}}/comments/events/{{event2}}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -222,10 +270,10 @@
 							"port": "8080",
 							"path": [
 								"user",
-								"1",
+								"{{user1}}}",
 								"comments",
 								"events",
-								"2"
+								"{{event2}}}"
 							]
 						}
 					},
@@ -246,7 +294,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/user/1/comments/events/5",
+							"raw": "http://localhost:8080/user/{{user1}}}/comments/events/5532532",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -254,10 +302,10 @@
 							"port": "8080",
 							"path": [
 								"user",
-								"1",
+								"{{user1}}}",
 								"comments",
 								"events",
-								"5"
+								"5532532"
 							]
 						}
 					},
@@ -278,7 +326,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/user/5/comments/events/2",
+							"raw": "http://localhost:8080/user/55435435/comments/events/{{event2}}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -286,10 +334,10 @@
 							"port": "8080",
 							"path": [
 								"user",
-								"5",
+								"55435435",
 								"comments",
 								"events",
-								"2"
+								"{{event2}}}"
 							]
 						}
 					},
@@ -339,7 +387,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/admin/events/1",
+							"raw": "http://localhost:8080/admin/events/{{event1}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -348,7 +396,7 @@
 							"path": [
 								"admin",
 								"events",
-								"1"
+								"{{event1}}"
 							]
 						}
 					},
@@ -369,7 +417,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/admin/events/2",
+							"raw": "http://localhost:8080/admin/events/{{event2}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -378,7 +426,7 @@
 							"path": [
 								"admin",
 								"events",
-								"2"
+								"{{event2}}"
 							]
 						}
 					},
@@ -386,6 +434,18 @@
 				},
 				{
 					"name": "Добавление комментария ко второму событию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('comment1', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -399,7 +459,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/user/1/comments/events/2",
+							"raw": "http://localhost:8080/user/{{user1}}/comments/events/{{event2}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -407,10 +467,10 @@
 							"port": "8080",
 							"path": [
 								"user",
-								"1",
+								"{{user1}}",
 								"comments",
 								"events",
-								"2"
+								"{{event2}}"
 							]
 						}
 					},
@@ -418,6 +478,18 @@
 				},
 				{
 					"name": "Добавление комментария ко второму событию Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('comment2', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -431,7 +503,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/user/2/comments/events/2",
+							"raw": "http://localhost:8080/user/{{user2}}/comments/events/{{event2}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -439,10 +511,10 @@
 							"port": "8080",
 							"path": [
 								"user",
-								"2",
+								"{{user2}}",
 								"comments",
 								"events",
-								"2"
+								"{{event2}}"
 							]
 						}
 					},
@@ -508,7 +580,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/user/1/comments/5/events/2",
+							"raw": "http://localhost:8080/user/{{user1}}}/comments/54532/events/{{event2}}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -516,11 +588,11 @@
 							"port": "8080",
 							"path": [
 								"user",
-								"1",
+								"{{user1}}}",
 								"comments",
-								"5",
+								"54532",
 								"events",
-								"2"
+								"{{event2}}}"
 							]
 						}
 					},
@@ -555,7 +627,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/user/2/comments/1/events/2",
+							"raw": "http://localhost:8080/user/{{user2}}}/comments/{{comment1}}}/events/{{event2}}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -563,11 +635,11 @@
 							"port": "8080",
 							"path": [
 								"user",
-								"2",
+								"{{user2}}}",
 								"comments",
-								"1",
+								"{{comment1}}}",
 								"events",
-								"2"
+								"{{event2}}}"
 							]
 						}
 					},
@@ -604,7 +676,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/user/1/comments/1/events/2",
+							"raw": "http://localhost:8080/user/{{user1}}/comments/{{comment1}}/events/{{event2}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -612,11 +684,11 @@
 							"port": "8080",
 							"path": [
 								"user",
-								"1",
+								"{{user1}}",
 								"comments",
-								"1",
+								"{{comment1}}",
 								"events",
-								"2"
+								"{{event2}}"
 							]
 						}
 					},
@@ -647,7 +719,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/1/events/2/comments",
+							"raw": "http://localhost:8080/users/{{user1}}}/events/{{event2}}}/comments",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -655,9 +727,9 @@
 							"port": "8080",
 							"path": [
 								"users",
-								"1",
+								"{{user1}}}",
 								"events",
-								"2",
+								"{{event2}}}",
 								"comments"
 							]
 						}
@@ -693,7 +765,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/2/events/2/comments",
+							"raw": "http://localhost:8080/users/{{user2}}/events/{{event2}}/comments",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -701,9 +773,9 @@
 							"port": "8080",
 							"path": [
 								"users",
-								"2",
+								"{{user2}}",
 								"events",
-								"2",
+								"{{event2}}",
 								"comments"
 							]
 						}
@@ -739,7 +811,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/events/2/comments",
+							"raw": "http://localhost:8080/events/{{event2}}/comments",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -747,7 +819,7 @@
 							"port": "8080",
 							"path": [
 								"events",
-								"2",
+								"{{event2}}",
 								"comments"
 							]
 						}
@@ -777,7 +849,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/user/1/comments/1/events/2",
+							"raw": "http://localhost:8080/user/{{user1}}/comments/{{comment1}}/events/{{event2}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -785,11 +857,11 @@
 							"port": "8080",
 							"path": [
 								"user",
-								"1",
+								"{{user1}}",
 								"comments",
-								"1",
+								"{{comment1}}",
 								"events",
-								"2"
+								"{{event2}}"
 							]
 						}
 					},
@@ -820,7 +892,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/events/2/comments",
+							"raw": "http://localhost:8080/events/{{event2}}/comments",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -828,7 +900,7 @@
 							"port": "8080",
 							"path": [
 								"events",
-								"2",
+								"{{event2}}",
 								"comments"
 							]
 						}
@@ -853,7 +925,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/admin/events/2/comments/2",
+							"raw": "http://localhost:8080/admin/events/{{event2}}/comments/{{comment2}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -862,9 +934,9 @@
 							"path": [
 								"admin",
 								"events",
-								"2",
+								"{{event2}}",
 								"comments",
-								"2"
+								"{{comment2}}"
 							]
 						}
 					},
@@ -895,7 +967,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/events/2/comments",
+							"raw": "http://localhost:8080/events/{{event2}}/comments",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -903,7 +975,7 @@
 							"port": "8080",
 							"path": [
 								"events",
-								"2",
+								"{{event2}}",
 								"comments"
 							]
 						}
@@ -935,6 +1007,65 @@
 					}
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "user1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "category1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "event1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "event2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "comment1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "comment2",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
