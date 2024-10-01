@@ -14,6 +14,7 @@ public class CommentMapper {
         commentOutDto.setEventTitle(comment.getEvent().getTitle());
         commentOutDto.setUserName(comment.getUser().getName());
         commentOutDto.setText(comment.getComment());
+        commentOutDto.setId(comment.getId());
         return commentOutDto;
     }
 

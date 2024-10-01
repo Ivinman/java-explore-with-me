@@ -28,6 +28,7 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
         comment.setUser(userRepository.findById(userId).get());
         comment.setEvent(eventRepository.findById(eventId).get());
         commentRepository.save(comment);
+        comment.setId(commentRepository.findFirstByOrderByIdDesc().getId());
 
         return CommentMapper.toCommOutDto(commentRepository.findFirstByOrderByIdDesc());
     }
