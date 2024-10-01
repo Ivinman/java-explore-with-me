@@ -1,5 +1,6 @@
 package ru.practicum.part.private_part.events.service;
 
+import ru.practicum.dto.comment.CommentOutForEventDto;
 import ru.practicum.dto.event.EventDto;
 import ru.practicum.dto.event.EventWithStateActionDto;
 import ru.practicum.dto.event.ShortEventDto;
@@ -24,4 +25,6 @@ public interface PrivateEventService {
     RequestResponseDto editRequests(Integer userId, Integer eventId, RequestEditDto requestEditDto) throws Exception;
 
     void deleteEvent(Integer eventId) throws Exception;
+
+    List<CommentOutForEventDto> getComments(Integer userId, Integer eventId, Integer from, Integer size) throws Exception;
 }

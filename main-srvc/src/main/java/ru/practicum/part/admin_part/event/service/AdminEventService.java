@@ -10,4 +10,6 @@ public interface AdminEventService {
                                  String start, String end, Integer from, Integer size) throws Exception;
 
     FullEventDto editEvent(Integer eventId, EventWithStateActionDto eventWithStateActionDto) throws Exception;
+
+    void deleteComment(Integer eventId, Integer commId) throws Exception;
 }

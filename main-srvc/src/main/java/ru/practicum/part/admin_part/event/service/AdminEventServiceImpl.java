@@ -12,6 +12,7 @@ import ru.practicum.exception.ForbiddenException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.model.event.Event;
 import ru.practicum.storage.category.CategoriesRepository;
+import ru.practicum.storage.comment.CommentRepository;
 import ru.practicum.storage.event.EventRepository;
 
 import java.sql.Timestamp;
@@ -25,6 +26,7 @@ import java.util.List;
 public class AdminEventServiceImpl implements AdminEventService {
     private final EventRepository eventRepository;
     private final CategoriesRepository categoriesRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public List<FullEventDto> getEvents(List<Integer> userIds, List<String> states, List<Integer> categories,
@@ -119,5 +121,21 @@ public class AdminEventServiceImpl implements AdminEventService {
 
         eventRepository.save(event);
         return EventMapper.toFullEventDto(event);
+    }
+
+    @Override
+    public void deleteComment(Integer eventId, Integer commId) throws Exception {
+        if (eventRepository.findById(eventId).isEmpty()) {
+            throw new NotFoundException("Event with id=" + eventId + " was not found");
+        }
+        if (commentRepository.findById(commId).isEmpty()) {
+            throw new NotFoundException("Comment with id=" + eventId + " was not found");
+        }
+
+        System.out.println(commentRepository.findById(1));
+        System.out.println(commentRepository.findById(2));
+        commentRepository.deleteById(commId);
+        System.out.println(commentRepository.findById(1));
+        System.out.println(commentRepository.findById(2));
     }
 }

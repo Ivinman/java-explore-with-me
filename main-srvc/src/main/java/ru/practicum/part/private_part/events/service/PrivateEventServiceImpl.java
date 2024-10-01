@@ -2,6 +2,8 @@ package ru.practicum.part.private_part.events.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.dto.comment.CommentMapper;
+import ru.practicum.dto.comment.CommentOutForEventDto;
 import ru.practicum.dto.event.*;
 import ru.practicum.dto.request.RequestEditDto;
 import ru.practicum.dto.request.RequestResponseDto;
@@ -12,10 +14,12 @@ import ru.practicum.exception.ValidationException;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.ForbiddenException;
 import ru.practicum.exception.NotFoundException;
+import ru.practicum.model.comment.Comment;
 import ru.practicum.model.event.Location;
 import ru.practicum.model.request.Request;
 import ru.practicum.dto.request.RequestDto;
 import ru.practicum.dto.request.RequestMapper;
+import ru.practicum.storage.comment.CommentRepository;
 import ru.practicum.storage.request.RequestRepository;
 import ru.practicum.storage.category.CategoriesRepository;
 import ru.practicum.storage.event.EventRepository;
@@ -37,6 +41,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     private final CategoriesRepository categoriesRepository;
     private final UserRepository userRepository;
     private final RequestRepository requestRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public FullEventDto addEvent(Integer userId, EventDto eventDto) throws Exception {
@@ -187,9 +192,26 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         return getReqRespDto(requestEditDto, eventId, requestResponseDto, status);
     }
 
+    @Override
     public void deleteEvent(Integer eventId) throws Exception {
         eventFoundCheck(eventId);
         eventRepository.deleteById(eventId);
+    }
+
+    @Override
+    public List<CommentOutForEventDto> getComments(Integer userId, Integer eventId,
+                                                   Integer from, Integer size) throws Exception {
+        userValid(userId);
+        eventFoundCheck(eventId);
+        if (!eventRepository.findById(eventId).get().getInitiator().getId()
+                .equals(userRepository.findById(userId).get().getId())) {
+            throw new ValidationException("User with id= " + userId + " is not the author of event id= " + eventId);
+        }
+        List<CommentOutForEventDto> commentOutDtoList = new ArrayList<>();
+        for (Comment comment: commentRepository.findByEventId(eventId)) {
+            commentOutDtoList.add(CommentMapper.toCommOutForEvent(comment));
+        }
+        return commentOutDtoList.stream().skip(from).limit(size).toList();
     }
 
     private void userValid(Integer userId) throws Exception {
