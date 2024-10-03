@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 public class EventDto {
-    @NotNull(message = "Annotation has no value")
     @NotBlank(message = "Annotation is blank")
     @Length(min = 20, max = 2000, message = "Annotation length must be in 20 and 2000 symbols")
     private String annotation;
@@ -16,7 +15,6 @@ public class EventDto {
     @NotNull(message = "Category has no value")
     private Integer category;
 
-    @NotNull(message = "Description has no value")
     @NotBlank(message = "Description is blank")
     @Length(min = 20, max = 7000, message = "Description length must be in 20 and 7000 symbols")
     private String description;
@@ -34,7 +32,6 @@ public class EventDto {
 
     private Boolean requestModeration;
 
-    @NotNull(message = "Title has no value")
     @NotBlank(message = "Title is blank")
     @Length(min = 3, max = 120, message = "Title length must be in 3 and 120 symbols")
     private String title;

@@ -125,17 +125,6 @@ public class AdminEventServiceImpl implements AdminEventService {
 
     @Override
     public void deleteComment(Integer eventId, Integer commId) throws Exception {
-        if (eventRepository.findById(eventId).isEmpty()) {
-            throw new NotFoundException("Event with id=" + eventId + " was not found");
-        }
-        if (commentRepository.findById(commId).isEmpty()) {
-            throw new NotFoundException("Comment with id=" + eventId + " was not found");
-        }
-
-        System.out.println(commentRepository.findById(1));
-        System.out.println(commentRepository.findById(2));
         commentRepository.deleteById(commId);
-        System.out.println(commentRepository.findById(1));
-        System.out.println(commentRepository.findById(2));
     }
 }

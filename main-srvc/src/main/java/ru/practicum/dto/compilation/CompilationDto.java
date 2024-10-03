@@ -10,7 +10,6 @@ public class CompilationDto {
     private Integer[] events;
     private Boolean pinned;
 
-    @NotNull(message = "Field title - no value entered")
     @NotBlank(message = "Field title is blank")
     @Length(min = 1, max = 50, message = "Title is too long")
     private String title;

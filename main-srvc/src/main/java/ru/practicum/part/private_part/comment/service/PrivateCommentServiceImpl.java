@@ -47,8 +47,10 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
 
     @Override
     public void deleteComment(Integer userId, Integer eventId, Integer commId) throws Exception {
-        userAndEventCheck(userId, eventId);
-        commentAndAuthorCheck(userId, commId);
+        if (commentRepository.findById(commId).isPresent()
+                && !commentRepository.findById(commId).get().getUser().getId().equals(userId)) {
+            throw new ValidationException("User with id= " + userId + " is not the author");
+        }
 
         commentRepository.deleteById(commId);
     }
