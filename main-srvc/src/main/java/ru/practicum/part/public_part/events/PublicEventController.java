@@ -3,6 +3,7 @@ package ru.practicum.part.public_part.events;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.dto.comment.CommentOutForEventDto;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.dto.event.ShortEventDto;
 import ru.practicum.part.public_part.events.service.PublicEventService;
@@ -33,5 +34,12 @@ public class PublicEventController {
     @GetMapping("/{id}")
     public FullEventDto getEvent(@PathVariable Integer id, HttpServletRequest request) throws Exception {
         return publicEventService.getEvent(id, request);
+    }
+
+    @GetMapping("/{eventId}/comments")
+    public List<CommentOutForEventDto> getComments(@PathVariable Integer eventId,
+                                                   @RequestParam(defaultValue = "0") Integer from,
+                                                   @RequestParam(defaultValue = "10") Integer size) throws Exception {
+        return publicEventService.getComments(eventId, from, size);
     }
 }

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.dto.comment.CommentOutForEventDto;
 import ru.practicum.dto.event.EventDto;
 import ru.practicum.dto.event.EventWithStateActionDto;
 import ru.practicum.dto.event.FullEventDto;
@@ -65,5 +66,13 @@ public class PrivateEventsController {
     @DeleteMapping("/{eventId}")
     public void deleteEvent(@PathVariable Integer eventId) throws Exception {
         privateEventService.deleteEvent(eventId);
+    }
+
+    @GetMapping("/{eventId}/comments")
+    public List<CommentOutForEventDto> getComments(@PathVariable Integer userId,
+                                                   @PathVariable Integer eventId,
+                                                   @RequestParam(defaultValue = "0") Integer from,
+                                                   @RequestParam(defaultValue = "10") Integer size) throws Exception {
+        return privateEventService.getComments(userId, eventId, from, size);
     }
 }

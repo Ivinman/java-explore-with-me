@@ -1,0 +1,1071 @@
+{
+	"info": {
+		"_postman_id": "bbd351c7-e226-4b9d-869f-41dd01cfaaab",
+		"name": "Explore with me - comment feature",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33622313"
+	},
+	"item": [
+		{
+			"name": "Users and Events",
+			"item": [
+				{
+					"name": "Добавление первого пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('user1', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"User 1\",\r\n    \"email\":\"User1@yahoo.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление второго пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('user2', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"User 2\",\r\n    \"email\":\"User2@yahoo.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление категории",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('category1', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"TestCateg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление события первого пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('event1', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"annotation\":\"Reprehenderit earum ipsam distinctio perferendis aliquid doloribus. Eum nobis perspiciatis. Quibusdam aut numquam provident. Ea sed dolor commodi error qui illo fugit eum. Laboriosam eos tenetur consequatur est.\",\r\n    \"category\":1,\r\n    \"description\":\"Doloribus molestias alias aspernatur voluptatum corrupti esse quis. Voluptatem sit fuga. Quidem dolorem sapiente asperiores et consequatur qui nisi quia qui. Qui rerum id.\\n \\rQuidem architecto explicabo unde et quasi nisi unde. Voluptatem inventore nulla quibusdam assumenda rerum ut. Ab tenetur saepe vel natus optio et quo qui. Recusandae dignissimos aut laudantium aliquid non quia. Cupiditate quis cupiditate quod aut neque aut nulla consequatur. Hic nemo facere voluptatibus.\\n \\rTempore repellat id est omnis vero. Vero vel commodi quasi accusamus rerum voluptatem. Soluta voluptas consectetur.\",\r\n    \"eventDate\":\"2025-10-01 22:27:24\",\r\n    \"location\":{\"lat\":-39.2645,\"lon\":154.8087},\r\n    \"paid\":\"true\",\r\n    \"participantLimit\":\"938\",\r\n    \"requestModeration\":\"true\",\r\n    \"title\":\"First title\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/{{user1}}/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"{{user1}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление события от второго пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('event2', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"annotation\":\"Reprehenderit earum ipsam distinctio perferendis aliquid doloribus. Eum nobis perspiciatis. Quibusdam aut numquam provident. Ea sed dolor commodi error qui illo fugit eum. Laboriosam eos tenetur consequatur est.\",\r\n    \"category\":1,\r\n    \"description\":\"Doloribus molestias alias aspernatur voluptatum corrupti esse quis. Voluptatem sit fuga. Quidem dolorem sapiente asperiores et consequatur qui nisi quia qui. Qui rerum id.\\n \\rQuidem architecto explicabo unde et quasi nisi unde. Voluptatem inventore nulla quibusdam assumenda rerum ut. Ab tenetur saepe vel natus optio et quo qui. Recusandae dignissimos aut laudantium aliquid non quia. Cupiditate quis cupiditate quod aut neque aut nulla consequatur. Hic nemo facere voluptatibus.\\n \\rTempore repellat id est omnis vero. Vero vel commodi quasi accusamus rerum voluptatem. Soluta voluptas consectetur.\",\r\n    \"eventDate\":\"2025-10-01 22:27:24\",\r\n    \"location\":{\"lat\":-39.2645,\"lon\":154.8087},\r\n    \"paid\":\"true\",\r\n    \"participantLimit\":\"938\",\r\n    \"requestModeration\":\"true\",\r\n    \"title\":\"Second\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/{{user2}}/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"{{user2}}",
+								"events"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"Ответ должен содержать код успеха и данные в формате json\", function () {\r",
+							"    pm.response.to.be.success;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"})"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Add comment with error",
+			"item": [
+				{
+					"name": "Добавление комментария к не опубликованному событию",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/{{user1}}}/comments/events/{{event2}}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"{{user1}}}",
+								"comments",
+								"events",
+								"{{event2}}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление комментария к не найденному событию",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/{{user1}}}/comments/events/5532532",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"{{user1}}}",
+								"comments",
+								"events",
+								"5532532"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление комментария с не найденным пользователем",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/55435435/comments/events/{{event2}}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"55435435",
+								"comments",
+								"events",
+								"{{event2}}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"Ответ должен содержать код ошибки\", function () {\r",
+							"    pm.response.to.be.error;\r",
+							"})"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Add comment",
+			"item": [
+				{
+					"name": "Публикация первого события",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stateAction\": \"PUBLISH_EVENT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/events/{{event1}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"events",
+								"{{event1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Публикация второго события Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stateAction\": \"PUBLISH_EVENT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/events/{{event2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"events",
+								"{{event2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление комментария ко второму событию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('comment1', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/{{user1}}/comments/events/{{event2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"{{user1}}",
+								"comments",
+								"events",
+								"{{event2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Добавление комментария ко второму событию Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('comment2', pm.response.json().id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/{{user2}}/comments/events/{{event2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"{{user2}}",
+								"comments",
+								"events",
+								"{{event2}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"Ответ должен содержать код успеха и данные в формате json\", function () {\r",
+							"    pm.response.to.be.success;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"})"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Edit comment",
+			"item": [
+				{
+					"name": "Изменение комментария с неправильным id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код ошибки\", function () {\r",
+									"    pm.response.to.be.error;\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"New comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/{{user1}}}/comments/54532/events/{{event2}}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"{{user1}}}",
+								"comments",
+								"54532",
+								"events",
+								"{{event2}}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение комментария не автором",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код ошибки\", function () {\r",
+									"    pm.response.to.be.error;\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"New comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/{{user2}}}/comments/{{comment1}}}/events/{{event2}}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"{{user2}}}",
+								"comments",
+								"{{comment1}}}",
+								"events",
+								"{{event2}}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение комментария",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код успеха и данные в формате json\", function () {\r",
+									"    pm.response.to.be.success;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\" : \"New comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/user/{{user1}}/comments/{{comment1}}/events/{{event2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"{{user1}}",
+								"comments",
+								"{{comment1}}",
+								"events",
+								"{{event2}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get comment",
+			"item": [
+				{
+					"name": "Получение комментариев не автором события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код ошибки\", function () {\r",
+									"    pm.response.to.be.error;\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/{{user1}}}/events/{{event2}}}/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"{{user1}}}",
+								"events",
+								"{{event2}}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение комментариев автором события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код успеха и данные в формате json\", function () {\r",
+									"    pm.response.to.be.success;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"const body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Список должен содержать 2 элемента\", function () {\r",
+									"    pm.expect(body).is.an(\"array\");\r",
+									"    pm.expect(body.length).to.be.equals(2);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/{{user2}}/events/{{event2}}/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"{{user2}}",
+								"events",
+								"{{event2}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение комментариев к событию",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код успеха и данные в формате json\", function () {\r",
+									"    pm.response.to.be.success;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"})\r",
+									"\r",
+									"const body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Список должен содержать 2 элемента\", function () {\r",
+									"    pm.expect(body).is.an(\"array\");\r",
+									"    pm.expect(body.length).to.be.equals(2);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/events/{{event2}}/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"{{event2}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete comment",
+			"item": [
+				{
+					"name": "Удаление комментария автором",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/user/{{user1}}/comments/{{comment1}}/events/{{event2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"{{user1}}",
+								"comments",
+								"{{comment1}}",
+								"events",
+								"{{event2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение комментариев к событию Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Ответ должен содержать тело с комментариями и их количество должно быть 1\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.expect(body).is.an('array');\r",
+									"    pm.expect(body.length).to.be.equal(1);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/events/{{event2}}/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"{{event2}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление комментария админом",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/events/{{event2}}/comments/{{comment2}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"events",
+								"{{event2}}",
+								"comments",
+								"{{comment2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение комментариев к событию Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Ответ должен содержать тело с комментариями и их количество должно быть 0\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    pm.expect(body).is.an('array');\r",
+									"    pm.expect(body.length).to.be.equal(0);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/events/{{event2}}/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"{{event2}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"Ответ должен содержать код успеха\", function () {\r",
+							"    pm.response.to.be.success;\r",
+							"})"
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "user1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "category1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "event1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "event2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "comment1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "comment2",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

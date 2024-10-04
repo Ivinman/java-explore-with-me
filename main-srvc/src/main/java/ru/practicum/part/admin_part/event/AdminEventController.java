@@ -31,4 +31,9 @@ public class AdminEventController {
                            @RequestBody @Valid EventWithStateActionDto eventWithStateActionDto) throws Exception {
         return adminEventService.editEvent(eventId, eventWithStateActionDto);
     }
+
+    @DeleteMapping("/{eventId}/comments/{commId}")
+    public void deleteComment(@PathVariable Integer eventId, @PathVariable Integer commId) throws Exception {
+        adminEventService.deleteComment(eventId, commId);
+    }
 }

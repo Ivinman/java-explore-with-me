@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 import ru.practicum.HitDto;
 import ru.practicum.HitClient;
 import ru.practicum.HitStatDto;
+import ru.practicum.dto.comment.CommentMapper;
+import ru.practicum.dto.comment.CommentOutForEventDto;
 import ru.practicum.dto.event.EventMapper;
 import ru.practicum.dto.event.FullEventDto;
 import ru.practicum.dto.event.ShortEventDto;
 import ru.practicum.enums.EventState;
 import ru.practicum.exception.ValidationException;
 import ru.practicum.exception.NotFoundException;
+import ru.practicum.model.comment.Comment;
 import ru.practicum.model.event.Event;
+import ru.practicum.storage.comment.CommentRepository;
 import ru.practicum.storage.event.EventRepository;
 
 import java.sql.Timestamp;
@@ -28,6 +32,7 @@ import java.util.Optional;
 public class PublicEventServiceImpl implements PublicEventService {
     private final EventRepository eventRepository;
     private final HitClient hitClient;
+    private final CommentRepository commentRepository;
 
     @Override
     public List<ShortEventDto> getEvents(String text, List<Integer> categories, Boolean paid,
@@ -80,12 +85,7 @@ public class PublicEventServiceImpl implements PublicEventService {
     @Override
     public FullEventDto getEvent(Integer eventId, HttpServletRequest request) throws Exception {
         Optional<Event> eventFromDb = eventRepository.findById(eventId);
-        if (eventFromDb.isEmpty()) {
-            throw new NotFoundException("Event with id=" + eventId + " was not found");
-        }
-        if (!eventFromDb.get().getState().equals(EventState.PUBLISHED.name())) {
-            throw new NotFoundException("Event with id=" + eventId + " is not published");
-        }
+        eventCheck(eventFromDb, eventId);
         Event event = eventFromDb.get();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         HitDto hitDto = getHitDto(request);
@@ -97,6 +97,25 @@ public class PublicEventServiceImpl implements PublicEventService {
         eventRepository.save(event);
 
         return EventMapper.toFullEventDto(event);
+    }
+
+    @Override
+    public List<CommentOutForEventDto> getComments(Integer eventId, Integer from, Integer size) throws Exception {
+        eventCheck(eventRepository.findById(eventId), eventId);
+        List<CommentOutForEventDto> commentOutDtoList = new ArrayList<>();
+        for (Comment comment: commentRepository.findByEventId(eventId)) {
+            commentOutDtoList.add(CommentMapper.toCommOutForEvent(comment));
+        }
+        return commentOutDtoList.stream().skip(from).limit(size).toList();
+    }
+
+    private void eventCheck(Optional<Event> eventFromDb, Integer eventId) throws Exception {
+        if (eventFromDb.isEmpty()) {
+            throw new NotFoundException("Event with id=" + eventId + " was not found");
+        }
+        if (!eventFromDb.get().getState().equals(EventState.PUBLISHED.name())) {
+            throw new NotFoundException("Event with id=" + eventId + " is not published");
+        }
     }
 
     private HitDto getHitDto(HttpServletRequest request) {
